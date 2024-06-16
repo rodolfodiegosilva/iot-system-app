@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+/* styles.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .main-container {
+    margin-top: 80px !important; /* Ajuste conforme necessário */
+    padding: 20px;
+  }
