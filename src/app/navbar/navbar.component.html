@@ -1,0 +1,9 @@
+<nav>
+  <a routerLink="/">IoT System App</a>
+  <div *ngIf="!isLoginPage()">
+    <a routerLink="/monitoring-dashboard">Monitoring Dashboard</a>
+    <span *ngIf="isLoggedIn()">Welcome, {{ userName }}</span>
+    <button *ngIf="isLoggedIn()" (click)="logout()">Logout</button>
+    <button *ngIf="!isLoggedIn()" routerLink="/login">Login</button>
+  </div>
+</nav>
