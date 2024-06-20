@@ -9,12 +9,11 @@ import { AuthService } from '../services/auth.service';
   template: '',
 })
 export class HomeComponent implements OnInit {
-
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/monitoring-dashboard']);
+      this.router.navigate(['/monitoringdashboard']);
     } else {
       this.router.navigate(['/login']);
     }

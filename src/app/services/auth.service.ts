@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   navigateToDashboard() {
-    this.router.navigate(['/monitoring-dashboard']);
+    this.router.navigate(['/monitoringdashboard']);
   }
 
   fetchUserData(): Observable<any> {
