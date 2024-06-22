@@ -15,10 +15,20 @@ export class DeviceService {
     pageNo: number,
     pageSize: number,
     sortBy: string,
-    sortDir: string
+    sortDir: string,
+    filters?:any
   ): Observable<DevicePaginatedData> {
-    return this.http.get<DevicePaginatedData>(
-      `${this.baseUrl}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`
-    );
+    let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+   
+
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        if (filters[key]) {
+          queryParams += `&${key}=${filters[key]}`;
+        }
+      });
+    }
+
+    return this.http.get<DevicePaginatedData>(`${this.baseUrl}${queryParams}`);
   }
 }

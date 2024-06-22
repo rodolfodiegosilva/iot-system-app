@@ -1,23 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginatedData } from '../models/paginated-data.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MonitoringService {
-  private apiUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080/monitoring';
 
   constructor(private http: HttpClient) {}
 
-  getMonitoringData(pageNo: number, pageSize: number, sortBy: string, sortDir: string): Observable<PaginatedData> {
-    let params = new HttpParams()
-      .set('pageNo', pageNo.toString())
-      .set('pageSize', pageSize.toString())
-      .set('sortBy', sortBy)
-      .set('sortDir', sortDir);
+  getMonitoringData(
+    pageNo: number,
+    pageSize: number,
+    sortBy: string,
+    sortDir: string,
+    filters?: any
+  ): Observable<PaginatedData> {
+    let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
-    return this.http.get<any>(`${this.apiUrl}/monitoring`, { params });
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        if (filters[key]) {
+          queryParams += `&${key}=${filters[key]}`;
+        }
+      });
+    }
+
+    return this.http.get<PaginatedData>(`${this.baseUrl}${queryParams}`);
   }
 }
