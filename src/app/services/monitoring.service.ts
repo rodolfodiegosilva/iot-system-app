@@ -30,4 +30,8 @@ export class MonitoringService {
 
     return this.http.get<PaginatedData>(`${this.baseUrl}${queryParams}`);
   }
+
+  getMonitoringByCode(monitoringCode: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${monitoringCode}`);
+  }
 }

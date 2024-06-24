@@ -1,53 +1,69 @@
 /* Estilos específicos do componente */
 .device-container {
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    max-width: 1000px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 1000px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: nowrap; /* Ensure the sections are side by side */
+  justify-content: space-between;
+  gap: 20px; /* Add space between the sections */
+  position: relative; /* Ensure the pseudo-element is positioned correctly */
+}
+
+.device-section {
+  flex: 1 1 48%;
+  margin: 10px;
+}
+
+.device-container h2, .device-container h3 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+.device-container p {
+  font-size: 1.2em;
+  margin: 5px 0;
+  color: #555;
+}
+
+.device-container .owner-info {
+  padding-top: 20px;
+  /* border-top: 1px solid #ddd; Remove this line to get rid of the horizontal line */
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Vertical separator */
+.device-container::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 1px;
+  background-color: #ddd;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .device-container {
+      flex-direction: column; /* Stack sections vertically in responsive mode */
   }
-  
   .device-section {
-    flex: 1 1 48%;
-    margin: 10px;
-  }
-  
-  .device-container h2, .device-container h3 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: #333;
-    text-align: center;
-  }
-  
-  .device-container p {
-    font-size: 1.2em;
-    margin: 5px 0;
-    color: #555;
-  }
-  
-  .device-container .owner-info {
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  @media (max-width: 768px) {
-    .device-container {
-      flex-direction: column;
-    }
-    .device-section {
       flex: 1 1 100%;
       margin: 10px 0;
-    }
   }
-  
+  .device-container::before {
+      display: none; /* Hide the separator in responsive mode */
+  }
+}

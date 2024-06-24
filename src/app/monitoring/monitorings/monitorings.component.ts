@@ -9,9 +9,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Monitoring } from '../models/monitoring.model';
-import { PaginatedData } from '../models/paginated-data.model';
-import { MonitoringService } from '../services/monitoring.service';
+import { Monitoring } from '../../models/monitoring.model';
+import { MonitoringService } from '../../services/monitoring.service';
+import { PaginatedData } from '../../models/paginated-data.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-monitoring-dashboard',
@@ -26,10 +27,10 @@ import { MonitoringService } from '../services/monitoring.service';
     CommonModule,
     FormsModule,
   ],
-  templateUrl: './monitoring-dashboard.component.html',
-  styleUrls: ['./monitoring-dashboard.component.css'],
+  templateUrl: './monitorings.component.html',
+  styleUrls: ['./monitorings.component.css'],
 })
-export class MonitoringDashboardComponent implements OnInit, OnDestroy {
+export class MonitoringsComponent implements OnInit, OnDestroy {
   monitorings: Monitoring[] = [];
   loading: boolean = true;
   totalRecords: number = 0;
@@ -39,7 +40,7 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<any>();
   private destroy$ = new Subject<void>();
 
-  constructor(private monitoringService: MonitoringService) {}
+  constructor(private monitoringService: MonitoringService, private router: Router) {}
 
   ngOnInit() {
     this.statuses = [
@@ -98,6 +99,10 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     this.searchSubject.next(updatedFilters);
   }
 
+  navigateToMonitoringDetail(monitoringCode: string) {
+    this.router.navigate(['/monitoring', monitoringCode]);
+  }
+
   getSeverity(status: string): "success" | "info" | "warning" | "danger" | "secondary" | "contrast" | undefined {
     switch (status) {
       case 'OFF':
@@ -106,8 +111,8 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
         return 'success';
       case 'STANDBY':
         return 'warning';
-        default:
-          return 'secondary';
+      default:
+        return 'secondary';
     }
   }
 }

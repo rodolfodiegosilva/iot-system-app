@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DevicePaginatedData } from '../models/paginated-data.model';
+import { DevicePaginatedData, PaginatedData } from '../models/paginated-data.model';
 import { Device } from '../models/device.model';
 
 @Injectable({
@@ -17,12 +17,12 @@ export class DeviceService {
     pageSize: number,
     sortBy: string,
     sortDir: string,
-    filters?:any
+    filters?: any
   ): Observable<DevicePaginatedData> {
     let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
-   
+
     if (filters) {
-      Object.keys(filters).forEach(key => {
+      Object.keys(filters).forEach((key) => {
         if (filters[key]) {
           queryParams += `&${key}=${filters[key]}`;
         }
@@ -34,5 +34,26 @@ export class DeviceService {
 
   getDeviceByCode(deviceCode: string): Observable<Device> {
     return this.http.get<Device>(`${this.baseUrl}/${deviceCode}`);
+  }
+
+  getMonitorings(
+    deviceCode: string,
+    pageNo: number,
+    pageSize: number,
+    sortBy: string,
+    sortDir: string,
+    filters?: any
+  ): Observable<PaginatedData> {
+    let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        if (filters[key]) {
+          queryParams += `&${key}=${filters[key]}`;
+        }
+      });
+    }
+
+    return this.http.get<PaginatedData>(`${this.baseUrl}/${deviceCode}/monitorings${queryParams}`);
   }
 }
