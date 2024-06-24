@@ -3,7 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { MonitoringDashboardComponent } from './monitoring-dashboard/monitoring-dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
-import { DeviceComponent } from './devices/DeviceComponent';
+import { DeviceComponent } from './devices/device-component';
 import { ErrorComponent } from './error/ErrorComponent ';
 
 export const appRoutes: Routes = [

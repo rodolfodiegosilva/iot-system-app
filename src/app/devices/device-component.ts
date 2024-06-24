@@ -9,12 +9,12 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Monitoring } from '../models/monitoring.model';
-import { PaginatedData } from '../models/paginated-data.model';
-import { MonitoringService } from '../services/monitoring.service';
+import { DevicePaginatedData } from '../models/paginated-data.model';
+import { Device } from '../models/device.model';
+import { DeviceService } from '../services/device-service';
 
 @Component({
-  selector: 'app-monitoring-dashboard',
+  selector: 'app-device',
   standalone: true,
   imports: [
     TableModule,
@@ -26,11 +26,11 @@ import { MonitoringService } from '../services/monitoring.service';
     CommonModule,
     FormsModule,
   ],
-  templateUrl: './monitoring-dashboard.component.html',
-  styleUrls: ['./monitoring-dashboard.component.css'],
+  templateUrl: './device.component.html',
+  styleUrls: ['./device.component.css'],
 })
-export class MonitoringDashboardComponent implements OnInit, OnDestroy {
-  monitorings: Monitoring[] = [];
+export class DeviceComponent implements OnInit, OnDestroy {
+  devices: Device[] = [];
   loading: boolean = true;
   totalRecords: number = 0;
   filters: any = {};
@@ -39,7 +39,7 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<any>();
   private destroy$ = new Subject<void>();
 
-  constructor(private monitoringService: MonitoringService) {}
+  constructor(private deviceService: DeviceService) {}
 
   ngOnInit() {
     this.statuses = [
@@ -47,7 +47,7 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
       { label: 'ON', value: 'ON' },
       { label: 'STANDBY', value: 'STANDBY' },
     ];
-    this.loadMonitorings({ first: 0, rows: 10 });
+    this.loadDevices({ first: 0, rows: 10 });
     
     this.searchSubject.pipe(
       debounceTime(300),
@@ -55,7 +55,7 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe((filters) => {
       this.filters = filters;
-      this.loadMonitorings({ first: 0, rows: 10 });
+      this.loadDevices({ first: 0, rows: 10 });
     });
   }
 
@@ -64,17 +64,17 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadMonitorings(event: any) {
+  loadDevices(event: any) {
     this.loading = true;
     const page = event.first / event.rows;
     const size = event.rows;
-    const sortBy = event.sortField || 'monitoringCode';
+    const sortBy = event.sortField || 'deviceCode';
     const sortDir = event.sortOrder === 1 ? 'asc' : 'desc';
 
-    this.monitoringService
-      .getMonitoringData(page, size, sortBy, sortDir, this.filters)
-      .subscribe((data: PaginatedData) => {
-        this.monitorings = data.content;
+    this.deviceService
+      .getDevices(page, size, sortBy, sortDir, this.filters)
+      .subscribe((data: DevicePaginatedData) => {
+        this.devices = data.content;
         this.totalRecords = data.totalElements;
         this.loading = false;
       });
@@ -82,13 +82,10 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
 
   clearFilters() {
     this.filters = {};
-    this.loadMonitorings({ first: 0, rows: 10 });
+    this.loadDevices({ first: 0, rows: 10 });
   }
   
   onFilter(event: any, field: string) {
-    console.log( event.target.value );
-    console.log( event );
-    
     const updatedFilters = { ...this.filters, [field]: event.target.value || '' };
     this.searchSubject.next(updatedFilters);
   }
@@ -106,8 +103,8 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
         return 'success';
       case 'STANDBY':
         return 'warning';
-        default:
-          return 'secondary';
+      default:
+        return 'secondary';
     }
   }
 }
