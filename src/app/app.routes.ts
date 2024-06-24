@@ -3,8 +3,9 @@ import { LoginComponent } from './login/login.component';
 import { MonitoringDashboardComponent } from './monitoring-dashboard/monitoring-dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
-import { DeviceComponent } from './devices/device-component';
 import { ErrorComponent } from './error/ErrorComponent ';
+import { DevicesComponent } from './devices/devices-list/devices-component';
+import { DeviceComponent } from './devices/device-detail/device.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -15,8 +16,13 @@ export const appRoutes: Routes = [
   },
   {
     path: 'devices',
-    component: DeviceComponent,
+    component: DevicesComponent,
     canActivate: [AuthGuardService],
+  },
+  {
+    path: 'device/:deviceCode',
+    component: DeviceComponent,
+    canActivate: [AuthGuardService]
   },
   { path: '', component: HomeComponent },
   { path: '**', component: ErrorComponent },

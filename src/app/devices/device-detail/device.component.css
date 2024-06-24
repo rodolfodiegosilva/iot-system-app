@@ -1,0 +1,53 @@
+/* Estilos específicos do componente */
+.device-container {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 1000px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .device-section {
+    flex: 1 1 48%;
+    margin: 10px;
+  }
+  
+  .device-container h2, .device-container h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .device-container p {
+    font-size: 1.2em;
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .device-container .owner-info {
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .device-container {
+      flex-direction: column;
+    }
+    .device-section {
+      flex: 1 1 100%;
+      margin: 10px 0;
+    }
+  }
+  

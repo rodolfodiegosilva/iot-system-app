@@ -132,7 +132,7 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-device>
-        <tr>
+        <tr (click)="navigateToDeviceDetail(device.deviceCode)" class="table-clickable-row">
           <td>{{ device.deviceCode }}</td>
           <td>
             <p-tag

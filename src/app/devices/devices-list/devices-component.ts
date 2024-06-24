@@ -9,9 +9,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DevicePaginatedData } from '../models/paginated-data.model';
-import { Device } from '../models/device.model';
-import { DeviceService } from '../services/device-service';
+import { Device } from '../../models/device.model';
+import { DeviceService } from '../../services/device-service';
+import { DevicePaginatedData } from '../../models/paginated-data.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-device',
@@ -26,10 +27,10 @@ import { DeviceService } from '../services/device-service';
     CommonModule,
     FormsModule,
   ],
-  templateUrl: './device.component.html',
-  styleUrls: ['./device.component.css'],
+  templateUrl: './devices.component.html',
+  styleUrls: ['./devices.component.css'],
 })
-export class DeviceComponent implements OnInit, OnDestroy {
+export class DevicesComponent implements OnInit, OnDestroy {
   devices: Device[] = [];
   loading: boolean = true;
   totalRecords: number = 0;
@@ -39,7 +40,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<any>();
   private destroy$ = new Subject<void>();
 
-  constructor(private deviceService: DeviceService) {}
+  constructor(private deviceService: DeviceService, private router: Router) {}
 
   ngOnInit() {
     this.statuses = [
@@ -93,6 +94,10 @@ export class DeviceComponent implements OnInit, OnDestroy {
   onFilterDropdown(event: any, field: string) {
     const updatedFilters = { ...this.filters, [field]: event.value || '' };
     this.searchSubject.next(updatedFilters);
+  }
+
+  navigateToDeviceDetail(deviceCode: string) {
+    this.router.navigate(['/device', deviceCode]);
   }
 
   getSeverity(status: string): "success" | "info" | "warning" | "danger" | "secondary" | "contrast" | undefined {
