@@ -1,0 +1,19 @@
+<p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
+
+<div *ngIf="device" class="device-container">
+  <div class="device-section">
+    <h2>Device Information</h2>
+    <p>Name: {{ device.name }}</p>
+    <p>Description: {{ device.description }}</p>
+    <p>Device Code: {{ device.deviceCode }}</p>
+    <p>Status: {{ device.status }}</p>
+  </div>
+  <div class="device-section owner-info">
+    <h3>Owner Information</h3>
+    <p>Name: {{ device.user.name }}</p>
+    <p>Email: {{ device.user.email }}</p>
+  </div>
+</div>
+<div *ngIf="errorMessage" class="error">
+  <p>{{ errorMessage }}</p>
+</div>

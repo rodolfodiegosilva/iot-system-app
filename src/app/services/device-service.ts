@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DevicePaginatedData } from '../models/paginated-data.model';
+import { Device } from '../models/device.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,6 @@ export class DeviceService {
   ): Observable<DevicePaginatedData> {
     let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
    
-
     if (filters) {
       Object.keys(filters).forEach(key => {
         if (filters[key]) {
@@ -30,5 +30,9 @@ export class DeviceService {
     }
 
     return this.http.get<DevicePaginatedData>(`${this.baseUrl}${queryParams}`);
+  }
+
+  getDeviceByCode(deviceCode: string): Observable<Device> {
+    return this.http.get<Device>(`${this.baseUrl}/${deviceCode}`);
   }
 }
