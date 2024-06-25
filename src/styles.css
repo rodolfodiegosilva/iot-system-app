@@ -48,9 +48,19 @@ main {
     width: 100%;
     margin-top: 20px;
   }
-
   .footer-content {
     flex-direction: column;
     align-items: center;
+  }
+  th {
+    font-size: 14px;
+    padding: 0.3rem 0.3rem;
+    margin: 5px 5px !important;
+  }
+  td {
+    font-size: 14px;
+  }
+  .p-column-filter-menu-button, .p-column-filter-clear-button {
+    display: none !important;
   }
 }
