@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 20.11.1
+        - nvm use 20.11.1
+        - npm install -g @angular/cli
+        - npm install
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist/iot-system-app/browser
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
