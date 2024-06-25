@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
+import { DeviceMonitoringComponent } from '../device-monitoring/device-monitoring.component'; // Import DeviceMonitoringComponent
 
 @Component({
   selector: 'app-device',
@@ -15,7 +16,8 @@ import { MenuItem } from 'primeng/api';
   imports: [
     CommonModule,
     FormsModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    DeviceMonitoringComponent // Add DeviceMonitoringComponent to imports
   ]
 })
 export class DeviceComponent implements OnInit {

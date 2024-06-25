@@ -1,17 +1,18 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { MonitoringDashboardComponent } from './monitoring-dashboard/monitoring-dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ErrorComponent } from './error/ErrorComponent ';
 import { DevicesComponent } from './devices/devices-list/devices-component';
 import { DeviceComponent } from './devices/device-detail/device.component';
+import { MonitoringComponent } from './monitoring/monitoring-detail/monitoring.component';
+import { MonitoringsComponent } from './monitoring/monitorings/monitorings.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   {
-    path: 'monitoringdashboard',
-    component: MonitoringDashboardComponent,
+    path: 'monitorings',
+    component: MonitoringsComponent,
     canActivate: [AuthGuardService],
   },
   {
@@ -22,7 +23,12 @@ export const appRoutes: Routes = [
   {
     path: 'device/:deviceCode',
     component: DeviceComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'monitoring/:monitoringCode',
+    component: MonitoringComponent,
+    canActivate: [AuthGuardService],
   },
   { path: '', component: HomeComponent },
   { path: '**', component: ErrorComponent },

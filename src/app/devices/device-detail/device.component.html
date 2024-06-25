@@ -17,3 +17,6 @@
 <div *ngIf="errorMessage" class="error">
   <p>{{ errorMessage }}</p>
 </div>
+
+<!-- Device Monitoring Component -->
+<app-device-monitoring *ngIf="device" [deviceCode]="device.deviceCode"></app-device-monitoring>

@@ -1,0 +1,47 @@
+.main-container {
+    margin-top: 80px;
+    padding: 20px;
+    padding-bottom: 60px; /* Espaço suficiente para o footer */
+  }
+  
+  .card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .title h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  
+  .p-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .p-columnFilter {
+    width: 100%;
+  }
+  
+  .p-dropdown {
+    width: 100%;
+  }
+  
+  .p-tag {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .table-clickable-row {
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .table-clickable-row:hover {
+    background-color: #f1f1f1;
+  }
+  

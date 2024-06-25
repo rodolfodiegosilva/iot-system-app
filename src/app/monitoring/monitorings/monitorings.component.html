@@ -78,7 +78,7 @@
                     <p-tag
                       [value]="option.value"
                       [severity]="getSeverity(option.value)"
-                    />
+                    ></p-tag>
                   </ng-template>
                 </p-dropdown>
               </ng-template>
@@ -87,7 +87,7 @@
           <th>
             <p-columnFilter
               type="text"
-              field="user.name"
+              field="userName"
               placeholder="Search by User"
               ariaLabel="Filter User"
               (input)="onFilter($event, 'userName')"
@@ -96,7 +96,7 @@
           <th>
             <p-columnFilter
               type="text"
-              field="device.name"
+              field="deviceName"
               placeholder="Search by Device"
               ariaLabel="Filter Device"
               (input)="onFilter($event, 'deviceName')"
@@ -124,7 +124,7 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-monitoring>
-        <tr>
+        <tr (click)="navigateToMonitoringDetail(monitoring.monitoringCode)" class="table-clickable-row">
           <td>{{ monitoring.monitoringCode }}</td>
           <td>
             <p-tag
@@ -134,8 +134,8 @@
           </td>
           <td>{{ monitoring.user.name }}</td>
           <td>{{ monitoring.device.name }}</td>
-          <td>{{ monitoring.createdAt | date : "short" }}</td>
-          <td>{{ monitoring.updatedAt | date : "short" }}</td>
+          <td>{{ monitoring.createdAt | date: 'short' }}</td>
+          <td>{{ monitoring.updatedAt | date: 'short' }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
