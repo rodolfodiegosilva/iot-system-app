@@ -1,5 +1,4 @@
 .main-container {
-  margin-top: 80px;
   padding: 20px;
   padding-bottom: 60px; /* Espaço suficiente para o footer */
 }
@@ -7,7 +6,7 @@
 .card {
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title h2 {
@@ -43,4 +42,20 @@
 
 .table-clickable-row:hover {
   background-color: #f1f1f1;
+}
+
+/* Esconder colunas menos importantes em dispositivos móveis */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 25px;
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-container {
+    padding: 0px !important;
+  }
 }

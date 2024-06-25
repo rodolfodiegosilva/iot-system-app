@@ -3,10 +3,10 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ErrorComponent } from './error/ErrorComponent ';
+import { MonitoringsComponent } from './monitoring/monitoring-list/monitorings.component';
 import { DevicesComponent } from './devices/devices-list/devices-component';
 import { DeviceComponent } from './devices/device-detail/device.component';
 import { MonitoringComponent } from './monitoring/monitoring-detail/monitoring.component';
-import { MonitoringsComponent } from './monitoring/monitorings/monitorings.component';
 
 export const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
