@@ -48,6 +48,10 @@ export class NavBarComponent implements OnInit {
     return this.router.url === '/login';
   }
 
+  isRegisterPage(): boolean {
+    return this.router.url === '/register';
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

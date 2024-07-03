@@ -1,5 +1,5 @@
-/* login.component.css */
-.login-container {
+/* register.component.css */
+.register-container {
   max-width: 300px;
   margin: 0 auto;
   padding: 20px;
@@ -42,12 +42,12 @@ button:hover {
   font-size: 0.875em;
 }
 
-.register-link {
+.login-link {
   margin-top: 15px;
   text-align: center;
 }
 
-.register-link .btn-link {
+.login-link .btn-link {
   padding: 0;
   background: none;
   border: none;
@@ -56,6 +56,15 @@ button:hover {
   cursor: pointer;
 }
 
-.register-link .btn-link:hover {
+.login-link .btn-link:hover {
   color: #0056b3;
+}
+
+.success-card {
+  background-color: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #d6e9c6;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
 }
