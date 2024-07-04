@@ -8,5 +8,6 @@ export interface Device {
   status: string;
   deviceCode: string;
   user: User;
+  industryType: string;
   createdAt: string;
 }

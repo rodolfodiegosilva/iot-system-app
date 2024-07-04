@@ -1,3 +1,4 @@
+<!-- navbar.component.html -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">IoT System App</a>
@@ -13,37 +14,22 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="isLoggedIn()">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/monitorings']"
-            >Dashboard de Monitoramento</a
-          >
+          <a class="nav-link" [routerLink]="['/monitorings']">Monitoring Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/devices']">Dispositivos</a>
+          <a class="nav-link" [routerLink]="['/devices']">Devices</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <span *ngIf="isLoading" class="navbar-text">Carregando...</span>
-        <span *ngIf="!isLoading && isLoggedIn()" class="navbar-text"
-          >Bem-vindo, {{ userName }}</span
-        >
+      <div class="d-flex ms-auto">
+        <span *ngIf="isLoading" class="navbar-text">Loading...</span>
+        <span *ngIf="!isLoading && isLoggedIn()" class="navbar-text">Welcome, {{ userName }}</span>
         <span *ngIf="errorMessage" class="navbar-text">{{ errorMessage }}</span>
-        <button
-          *ngIf="isLoggedIn()"
-          class="btn btn-outline-light ms-2"
-          (click)="logout()"
-        >
-          Sair
-        </button>
-        <button
-          *ngIf="!isLoggedIn()"
-          class="btn btn-outline-light ms-2"
-          [routerLink]="['/login']"
-        >
-          Entrar
-        </button>
-      </form>
+        <button *ngIf="isLoggedIn()" class="btn btn-outline-light ms-2" (click)="logout()">Logout</button>
+        <button *ngIf="!isLoggedIn() && isLoginPage()" class="btn btn-outline-light ms-2" [routerLink]="['/register']">Register</button>
+        <button *ngIf="!isLoggedIn() && isRegisterPage()" class="btn btn-outline-light ms-2" [routerLink]="['/login']">Login</button>
+      </div>
     </div>
   </div>
 </nav>

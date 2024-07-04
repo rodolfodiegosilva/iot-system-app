@@ -18,7 +18,7 @@ export class MonitoringService {
     sortDir: string,
     filters?: any
   ): Observable<PaginatedData> {
-    let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+    let queryParams = `/pageable?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
     if (filters) {
       Object.keys(filters).forEach(key => {

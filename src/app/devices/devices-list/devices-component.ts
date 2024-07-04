@@ -49,15 +49,13 @@ export class DevicesComponent implements OnInit, OnDestroy {
       { label: 'STANDBY', value: 'STANDBY' },
     ];
     this.loadDevices({ first: 0, rows: 10 });
-    
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    ).subscribe((filters) => {
-      this.filters = filters;
-      this.loadDevices({ first: 0, rows: 10 });
-    });
+
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((filters) => {
+        this.filters = filters;
+        this.loadDevices({ first: 0, rows: 10 });
+      });
   }
 
   ngOnDestroy() {
@@ -85,9 +83,12 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.filters = {};
     this.loadDevices({ first: 0, rows: 10 });
   }
-  
+
   onFilter(event: any, field: string) {
-    const updatedFilters = { ...this.filters, [field]: event.target.value || '' };
+    const updatedFilters = {
+      ...this.filters,
+      [field]: event.target.value || '',
+    };
     this.searchSubject.next(updatedFilters);
   }
 
@@ -100,7 +101,16 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.router.navigate(['/device', deviceCode]);
   }
 
-  getSeverity(status: string): "success" | "info" | "warning" | "danger" | "secondary" | "contrast" | undefined {
+  getSeverity(
+    status: string
+  ):
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'secondary'
+    | 'contrast'
+    | undefined {
     switch (status) {
       case 'OFF':
         return 'danger';
@@ -111,5 +121,9 @@ export class DevicesComponent implements OnInit, OnDestroy {
       default:
         return 'secondary';
     }
+  }
+
+  navigateToNewDevice() {
+    this.router.navigate(['/device/new']);
   }
 }
