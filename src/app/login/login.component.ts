@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private router: Router) {}
 
   login() {
     this.errorMessage = ''; // Clear previous error message
@@ -36,5 +37,8 @@ export class LoginComponent {
         }
       }
     );
+  }
+  navigateToRegister() {
+    this.router.navigate(['/register']);
   }
 }
