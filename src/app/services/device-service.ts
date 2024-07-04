@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DevicePaginatedData, PaginatedData } from '../models/paginated-data.model';
 import { Device } from '../models/device.model';
 
@@ -19,7 +19,7 @@ export class DeviceService {
     sortDir: string,
     filters?: any
   ): Observable<DevicePaginatedData> {
-    let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
+    let queryParams = `/pageable?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -34,6 +34,10 @@ export class DeviceService {
 
   getDeviceByCode(deviceCode: string): Observable<Device> {
     return this.http.get<Device>(`${this.baseUrl}/${deviceCode}`);
+  }
+
+  createDevice(device: Device): Observable<Device> {
+    return this.http.post<Device>(`${this.baseUrl}`, device);
   }
 
   getMonitorings(
@@ -55,5 +59,35 @@ export class DeviceService {
     }
 
     return this.http.get<PaginatedData>(`${this.baseUrl}/${deviceCode}/monitorings${queryParams}`);
+  }
+
+  getIndustryTypes(): Observable<string[]> {
+    const mockIndustryTypes = [
+      'Agriculture',
+      'Automotive',
+      'Construction',
+      'Education',
+      'Energy',
+      'Finance',
+      'Healthcare',
+      'Hospitality',
+      'Manufacturing',
+      'Retail',
+      'Technology',
+      'Telecommunications',
+      'Transportation',
+      'Utilities',
+      'Food & Beverage',
+      'Pharmaceuticals',
+      'Real Estate',
+      'Media',
+      'Aerospace',
+      'Mining'
+    ];
+    return of(mockIndustryTypes);
+  }
+
+  getAllDevices(): Observable<Device[]> {
+    return this.http.get<Device[]>(`${this.baseUrl}`);
   }
 }

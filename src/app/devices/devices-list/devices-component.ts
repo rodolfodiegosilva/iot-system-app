@@ -122,4 +122,8 @@ export class DevicesComponent implements OnInit, OnDestroy {
         return 'secondary';
     }
   }
+
+  navigateToNewDevice() {
+    this.router.navigate(['/device/new']);
+  }
 }
