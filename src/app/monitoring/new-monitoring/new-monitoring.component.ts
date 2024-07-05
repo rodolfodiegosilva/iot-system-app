@@ -3,19 +3,18 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Monitoring } from '../../models/monitoring.model';
-import { MonitoringService } from '../../services/monitoring.service';
-import { PaginatedData } from '../../models/paginated-data.model';
+import { Device } from '../../models/device.model';
+import { DeviceService } from '../../services/device-service';
+import { DevicePaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-monitoring-dashboard',
+  selector: 'app-new-monitoring',
   standalone: true,
   imports: [
     TableModule,
@@ -23,16 +22,15 @@ import { Router } from '@angular/router';
     InputTextModule,
     MultiSelectModule,
     DropdownModule,
-    HttpClientModule,
     CommonModule,
     FormsModule,
-  
   ],
-  templateUrl: './monitorings.component.html',
-  styleUrls: ['./monitorings.component.css'],
+  templateUrl: './new-monitoring.component.html',
+  styleUrls: ['./new-monitoring.component.css'],
 })
-export class MonitoringsComponent implements OnInit, OnDestroy {
-  monitorings: Monitoring[] = [];
+export class NewMonitoringComponent implements OnInit, OnDestroy {
+  devices: Device[] = [];
+  selectedDevices: Device[] = [];
   loading: boolean = true;
   totalRecords: number = 0;
   filters: any = {};
@@ -41,10 +39,7 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
   private searchSubject = new Subject<any>();
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private monitoringService: MonitoringService,
-    private router: Router
-  ) {}
+  constructor(private deviceService: DeviceService, private router: Router) {}
 
   ngOnInit() {
     this.statuses = [
@@ -52,13 +47,13 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
       { label: 'ON', value: 'ON' },
       { label: 'STANDBY', value: 'STANDBY' },
     ];
-    this.loadMonitorings({ first: 0, rows: 10 });
+    this.loadDevices({ first: 0, rows: 10 });
 
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((filters) => {
         this.filters = filters;
-        this.loadMonitorings({ first: 0, rows: 10 });
+        this.loadDevices({ first: 0, rows: 10 });
       });
   }
 
@@ -67,17 +62,17 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  loadMonitorings(event: any) {
+  loadDevices(event: any) {
     this.loading = true;
     const page = event.first / event.rows;
     const size = event.rows;
-    const sortBy = event.sortField || 'monitoringCode';
+    const sortBy = event.sortField || 'deviceCode';
     const sortDir = event.sortOrder === 1 ? 'asc' : 'desc';
 
-    this.monitoringService
-      .getMonitoringData(page, size, sortBy, sortDir, this.filters)
-      .subscribe((data: PaginatedData) => {
-        this.monitorings = data.content;
+    this.deviceService
+      .getDevices(page, size, sortBy, sortDir, this.filters)
+      .subscribe((data: DevicePaginatedData) => {
+        this.devices = data.content;
         this.totalRecords = data.totalElements;
         this.loading = false;
       });
@@ -85,7 +80,7 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
 
   clearFilters() {
     this.filters = {};
-    this.loadMonitorings({ first: 0, rows: 10 });
+    this.loadDevices({ first: 0, rows: 10 });
   }
 
   onFilter(event: any, field: string) {
@@ -101,20 +96,11 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
     this.searchSubject.next(updatedFilters);
   }
 
-  navigateToMonitoringDetail(monitoringCode: string) {
-    this.router.navigate(['/monitoring', monitoringCode]);
+  navigateToPreview() {
+    this.router.navigate(['/monitoring/preview'], { state: { selectedDevices: this.selectedDevices } });
   }
 
-  getSeverity(
-    status: string
-  ):
-    | 'success'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'secondary'
-    | 'contrast'
-    | undefined {
+  getSeverity(status: string): "success" | "info" | "warning" | "danger" | "secondary" | "contrast" | undefined {
     switch (status) {
       case 'OFF':
         return 'danger';
@@ -125,9 +111,5 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
       default:
         return 'secondary';
     }
-  }
-
-  navigateToNewMonitoring() {
-    this.router.navigate(['/monitoring/new']);
   }
 }
