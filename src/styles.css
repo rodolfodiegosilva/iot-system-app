@@ -38,13 +38,23 @@ main {
   flex: 1; /* Ensure the main container takes up available space */
 }
 
+.btn-primary {
+  margin: 15px 0;
+}
 /* Ensure responsiveness */
 @media (max-width: 768px) {
+  .title h2 {
+    font-size: 1.5em;
+  }
+  .title {
+    flex-direction: column;
+    align-items: center;
+  }
   .container {
     padding: 0;
   }
   .main-container {
-    padding: 0px 20px;
+    padding: 0px 5px !important;
     width: 100%;
     margin-top: 20px;
   }
@@ -60,7 +70,8 @@ main {
   td {
     font-size: 14px;
   }
-  .p-column-filter-menu-button, .p-column-filter-clear-button {
+  .p-column-filter-menu-button,
+  .p-column-filter-clear-button {
     display: none !important;
   }
 }

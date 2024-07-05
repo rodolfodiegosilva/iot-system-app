@@ -1,16 +1,14 @@
 <div class="main-container">
   <div class="title">
-    <h2>Devices List</h2>
-    <button (click)="navigateToNewDevice()" class="btn btn-primary add-new-button">
-      Add New Device
-    </button>
+    <h2>Create New Monitoring</h2>
   </div>
 
   <div class="card">
     <p-table
       #dt2
       [value]="devices"
-      dataKey="id"
+      [(selection)]="selectedDevices"
+      dataKey="deviceCode"
       [rows]="10"
       [rowsPerPageOptions]="[10, 50, 100]"
       [loading]="loading"
@@ -30,6 +28,9 @@
     >
       <ng-template pTemplate="header">
         <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
           <th pSortableColumn="deviceCode">
             Device Code <p-sortIcon field="deviceCode"></p-sortIcon>
           </th>
@@ -53,6 +54,7 @@
           </th>
         </tr>
         <tr>
+          <th></th>
           <th>
             <p-columnFilter
               type="text"
@@ -60,23 +62,32 @@
               placeholder="Search by Device Code"
               ariaLabel="Filter Device Code"
               (input)="onFilter($event, 'deviceCode')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
           <th>
-            <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
-              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                <p-dropdown 
-                  [(ngModel)]="selectedStatus" 
+            <p-columnFilter
+              field="status"
+              matchMode="equals"
+              [showMenu]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-dropdown
+                  [(ngModel)]="selectedStatus"
                   [options]="statuses"
-                  (onChange)="onFilterDropdown($event, 'status')" 
-                  placeholder="Select One" 
-                  [showClear]="true">
-                    <ng-template let-option pTemplate="item">
-                      <p-tag 
-                        [value]="option.value" 
-                        [severity]="getSeverity(option.value)" />
-                    </ng-template>
+                  (onChange)="onFilterDropdown($event, 'status')"
+                  placeholder="Select One"
+                  [showClear]="true"
+                >
+                  <ng-template let-option pTemplate="item">
+                    <p-tag
+                      [value]="option.value"
+                      [severity]="getSeverity(option.value)"
+                    />
+                  </ng-template>
                 </p-dropdown>
               </ng-template>
             </p-columnFilter>
@@ -88,8 +99,7 @@
               placeholder="Search by Name"
               ariaLabel="Filter Name"
               (input)="onFilter($event, 'deviceName')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
           <th>
             <p-columnFilter
@@ -98,8 +108,7 @@
               placeholder="Search by Description"
               ariaLabel="Filter Description"
               (input)="onFilter($event, 'description')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
           <th>
             <p-columnFilter
@@ -108,8 +117,7 @@
               placeholder="Search by Industry Type"
               ariaLabel="Filter Industry Type"
               (input)="onFilter($event, 'industryType')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
           <th>
             <p-columnFilter
@@ -118,8 +126,7 @@
               placeholder="Search by User"
               ariaLabel="Filter User"
               (input)="onFilter($event, 'userName')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
           <th>
             <p-columnFilter
@@ -128,14 +135,16 @@
               placeholder="Search by Created At"
               ariaLabel="Filter Created At"
               (input)="onFilter($event, 'createdAt')"
-            >
-            </p-columnFilter>
+            ></p-columnFilter>
           </th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-device>
-        <tr (click)="navigateToDeviceDetail(device.deviceCode)" class="table-clickable-row">
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="device"></p-tableCheckbox>
+          </td>
           <td>{{ device.deviceCode }}</td>
           <td>
             <p-tag
@@ -147,14 +156,18 @@
           <td>{{ device.description }}</td>
           <td>{{ device.industryType }}</td>
           <td>{{ device.user.name }}</td>
-          <td>{{ device.createdAt | date: 'short' }}</td>
+          <td>{{ device.createdAt | date : "short" }}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="7">No devices found.</td>
+          <td colspan="8">No devices found.</td>
         </tr>
       </ng-template>
     </p-table>
+  </div>
+
+  <div class="next-button-container">
+    <button (click)="navigateToPreview()" class="btn btn-primary">Next</button>
   </div>
 </div>

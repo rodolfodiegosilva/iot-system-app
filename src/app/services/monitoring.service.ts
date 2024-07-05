@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginatedData } from '../models/paginated-data.model';
+import { MonitoringRequest } from '../models/monitoring-request';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,9 @@ export class MonitoringService {
 
   getMonitoringByCode(monitoringCode: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${monitoringCode}`);
+  }
+
+  createMonitoring(request: MonitoringRequest[]): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}`, request);
   }
 }

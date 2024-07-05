@@ -1,18 +1,18 @@
 .main-container {
   padding: 20px;
-  padding-bottom: 60px; /* Espaço suficiente para o footer */
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card {
+  margin-top: 20px;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.title h2 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 500;
 }
 
 .p-table {
@@ -35,6 +35,7 @@
   font-size: 0.75rem;
   font-weight: 600;
 }
+
 .table-clickable-row {
   cursor: pointer;
   transition: background-color 0.3s;
@@ -44,18 +45,17 @@
   background-color: #f1f1f1;
 }
 
-/* Esconder colunas menos importantes em dispositivos móveis */
-@media (max-width: 768px) {
-  h2 {
-    font-size: 25px;
-  }
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.add-new-button {
+  margin-left: auto;
+}
 
-  .main-container {
-    padding: 0px !important;
+@media (max-width: 768px) {  
+  .add-new-button {
+    margin-left: 0;
+    margin-top: 10px;
+    align-self: center;
+  }
+  .card{
+    padding: 5px !important;
   }
 }
