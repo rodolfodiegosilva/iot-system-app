@@ -8,7 +8,7 @@ import { MonitoringRequest } from '../models/monitoring-request';
   providedIn: 'root',
 })
 export class MonitoringService {
-  private baseUrl = 'http://localhost:8080/monitoring';
+  private baseUrl = 'http://ec2-3-17-185-96.us-east-2.compute.amazonaws.com:8080/monitoring';
 
   constructor(private http: HttpClient) {}
 

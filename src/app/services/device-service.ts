@@ -8,7 +8,7 @@ import { Device } from '../models/device.model';
   providedIn: 'root',
 })
 export class DeviceService {
-  private baseUrl = 'http://localhost:8080/devices';
+  private baseUrl = 'http://ec2-3-17-185-96.us-east-2.compute.amazonaws.com:8080/devices';
 
   constructor(private http: HttpClient) {}
 
