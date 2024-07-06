@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { DevicePaginatedData, PaginatedData } from '../models/paginated-data.model';
+import {
+  DevicePaginatedData,
+  PaginatedData,
+} from '../models/paginated-data.model';
 import { Device } from '../models/device.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeviceService {
-  private baseUrl = 'http://ec2-3-17-185-96.us-east-2.compute.amazonaws.com:8080/devices';
+  private baseUrl = `${environment.apiUrl}/devices`;
 
   constructor(private http: HttpClient) {}
 
@@ -58,7 +62,9 @@ export class DeviceService {
       });
     }
 
-    return this.http.get<PaginatedData>(`${this.baseUrl}/${deviceCode}/monitorings${queryParams}`);
+    return this.http.get<PaginatedData>(
+      `${this.baseUrl}/${deviceCode}/monitorings${queryParams}`
+    );
   }
 
   getIndustryTypes(): Observable<string[]> {
@@ -82,7 +88,7 @@ export class DeviceService {
       'Real Estate',
       'Media',
       'Aerospace',
-      'Mining'
+      'Mining',
     ];
     return of(mockIndustryTypes);
   }

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PaginatedData } from '../models/paginated-data.model';
 import { MonitoringRequest } from '../models/monitoring-request';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MonitoringService {
-  private baseUrl = 'http://ec2-3-17-185-96.us-east-2.compute.amazonaws.com:8080/monitoring';
+  private baseUrl = `${environment.apiUrl}/monitoring`;
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +23,7 @@ export class MonitoringService {
     let queryParams = `/pageable?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
     if (filters) {
-      Object.keys(filters).forEach(key => {
+      Object.keys(filters).forEach((key) => {
         if (filters[key]) {
           queryParams += `&${key}=${filters[key]}`;
         }

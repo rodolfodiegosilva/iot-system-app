@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://ec2-3-17-185-96.us-east-2.compute.amazonaws.com:8080';
+  private apiUrl = environment.apiUrl;
   private userData: any;
 
   constructor(private http: HttpClient, private router: Router) {}
