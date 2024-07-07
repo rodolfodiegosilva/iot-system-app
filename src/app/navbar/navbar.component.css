@@ -1,7 +1,36 @@
 /* Custom navbar styles if needed */
 .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #ffd700; /* gold color for brand */
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #f1f1f1;
+  transition: color 0.3s;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: #ffd700; /* gold color on hover */
+}
+
+.navbar-text {
+  margin-right: 10px;
+  color: #f1f1f1;
+}
+
+.btn-outline-light {
+  color: #f1f1f1;
+  border-color: #f1f1f1;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-outline-light:hover {
+  background-color: #f1f1f1;
+  color: #282828;
+}

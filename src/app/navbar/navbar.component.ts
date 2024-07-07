@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -14,10 +14,12 @@ export class NavBarComponent implements OnInit {
   userName: string = '';
   isLoading: boolean = false;
   errorMessage: string = '';
+  isMobile: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
+    this.checkScreenSize();
     if (this.authService.isLoggedIn()) {
       this.isLoading = true;
       const userData = this.authService.getUserData();
@@ -38,6 +40,15 @@ export class NavBarComponent implements OnInit {
         });
       }
     }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   isLoggedIn(): boolean {
