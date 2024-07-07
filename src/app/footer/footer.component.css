@@ -1,11 +1,14 @@
+/* Base styling for the footer */
 .footer {
-  background-color: #333;
-  color: white;
+  background-color: #282828;
+  color: #f1f1f1;
   padding: 20px 0;
   width: 100%;
-  flex-shrink: 0; /* Ensure the footer doesn't shrink */
+  flex-shrink: 0;
+  font-family: 'Arial', sans-serif;
 }
 
+/* Footer content layout */
 .footer-content {
   display: flex;
   justify-content: space-around;
@@ -15,6 +18,7 @@
   padding: 0 20px;
 }
 
+/* Individual section styling */
 .footer-section {
   flex: 1;
   padding: 10px;
@@ -23,20 +27,38 @@
 
 .footer-section h4 {
   margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd700; /* gold color */
 }
 
 .footer-section p {
   margin: 5px 0;
+  line-height: 1.6;
 }
 
+/* Footer bottom section */
 .footer-bottom {
   text-align: center;
   padding: 10px 0;
   border-top: 1px solid #444;
   margin-top: 20px;
+  font-size: 14px;
 }
 
-/* Ensure responsiveness */
+/* Social media links styling */
+.social-links a {
+  margin: 0 10px;
+  color: #f1f1f1;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #ffd700; /* gold color */
+}
+
+/* Responsiveness for mobile devices */
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
@@ -45,5 +67,18 @@
 
   .footer-section {
     margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .footer-section h4 {
+    font-size: 16px;
+  }
+
+  .footer-section p {
+    font-size: 14px;
+  }
+
+  .social-links a {
+    font-size: 24px;
   }
 }
