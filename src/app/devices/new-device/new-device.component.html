@@ -1,48 +1,280 @@
 <div class="main-container new-device-container">
   <h2>Create New Device</h2>
 
-  <div class="clone-section">
-    <label for="cloneDevice">Clone from Existing Device</label>
-    <select id="cloneDevice" [(ngModel)]="selectedDeviceCode" (change)="cloneDevice(selectedDeviceCode)" class="form-control">
-      <option value="" disabled selected>Select a device to clone</option>
-      <option *ngFor="let device of devices" [value]="device.deviceCode">{{ device.name }}</option>
-    </select>
+  <p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
+
+  <div *ngIf="step === 1">
+    <div class="clone-section">
+      <label for="cloneDevice">Clone from Existing Device</label>
+      <select
+        id="cloneDevice"
+        [(ngModel)]="selectedDeviceCode"
+        (change)="cloneDevice(selectedDeviceCode)"
+        class="form-control"
+      >
+        <option value="" disabled selected>Select a device to clone</option>
+        <option *ngFor="let device of devices" [value]="device.deviceCode">
+          {{ device.deviceCode }} - {{ device.deviceName }}
+        </option>
+      </select>
+    </div>
+
+    <form [formGroup]="deviceForm">
+      <div class="form-group">
+        <label for="deviceName">Name</label>
+        <input
+          type="text"
+          id="deviceName"
+          formControlName="deviceName"
+          class="form-control"
+        />
+        <div
+          *ngIf="f['deviceName'].touched && f['deviceName'].invalid"
+          class="error"
+        >
+          <div *ngIf="f['deviceName'].errors?.['required']">
+            Name is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          formControlName="description"
+          class="form-control"
+        />
+        <div
+          *ngIf="f['description'].touched && f['description'].invalid"
+          class="error"
+        >
+          <div *ngIf="f['description'].errors?.['required']">
+            Description is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="industryType">Industry Type</label>
+        <select
+          id="industryType"
+          formControlName="industryType"
+          class="form-control"
+        >
+          <option *ngFor="let type of industryTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+        <div
+          *ngIf="f['industryType'].touched && f['industryType'].invalid"
+          class="error"
+        >
+          <div *ngIf="f['industryType'].errors?.['required']">
+            Industry Type is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="manufacturer">Manufacturer</label>
+        <input
+          type="text"
+          id="manufacturer"
+          formControlName="manufacturer"
+          class="form-control"
+        />
+        <div
+          *ngIf="f['manufacturer'].touched && f['manufacturer'].invalid"
+          class="error"
+        >
+          <div *ngIf="f['manufacturer'].errors?.['required']">
+            Manufacturer is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input
+          type="text"
+          id="url"
+          formControlName="url"
+          class="form-control"
+        />
+        <div *ngIf="f['url'].touched && f['url'].invalid" class="error">
+          <div *ngIf="f['url'].errors?.['required']">URL is required.</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="deviceStatus">Status</label>
+        <select
+          id="deviceStatus"
+          formControlName="deviceStatus"
+          class="form-control"
+        >
+          <option *ngFor="let status of statuses" [value]="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
+      <div class="button-container">
+        <button
+          type="button"
+          (click)="nextStep()"
+          [disabled]="!deviceForm.valid && !selectedDeviceCode"
+        >
+          Next
+        </button>
+      </div>
+    </form>
   </div>
 
-  <form [formGroup]="deviceForm" (ngSubmit)="createDevice()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" formControlName="name" class="form-control" />
-      <div *ngIf="f['name'].touched && f['name'].invalid" class="error">
-        <div *ngIf="f['name'].errors?.['required']">Name is required.</div>
+  <div *ngIf="step === 2">
+    <p-accordion>
+      <div
+        *ngFor="let command of commands; let i = index"
+        class="command-header"
+      >
+        <div class="command">
+          <p-accordionTab [header]="'Command ' + (i + 1)">
+            <div class="form-group">
+              <label for="operation">Operation</label>
+              <input
+                type="text"
+                [(ngModel)]="command.operation"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                [(ngModel)]="command.description"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="result">Result</label>
+              <input
+                type="text"
+                [(ngModel)]="command.result"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="format">Format</label>
+              <input
+                type="text"
+                [(ngModel)]="command.format"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="command">Command</label>
+              <input
+                type="text"
+                [(ngModel)]="command.command.command"
+                class="form-control"
+                required
+              />
+            </div>
+            <p-accordion>
+              <div
+                *ngFor="let param of command.command.parameters; let j = index"
+                class="parameter-header"
+              >
+                <div class="parameter">
+                  <p-accordionTab [header]="'Parameter ' + (j + 1)">
+                    <div class="form-group">
+                      <label for="name">Parameter Name</label>
+                      <input
+                        type="text"
+                        [(ngModel)]="param.name"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Parameter Description</label>
+                      <input
+                        type="text"
+                        [(ngModel)]="param.description"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                  </p-accordionTab>
+                </div>
+                <div class="delete-parameter-btn">
+                  <button (click)="deleteParameter(i, j)">X</button>
+                </div>
+              </div>
+              <button
+              
+    class="add-parameter-btn"
+                (click)="addParameter(i)"
+              >Add Parameter</button>
+            </p-accordion>
+          </p-accordionTab>
+        </div>
+        <div class="delete-command-btn">
+          <button (click)="deleteCommand(i)">X</button>
+        </div>
       </div>
+    </p-accordion>
+    <button
+    class="add-command-btn"
+      (click)="addCommand()"
+    >Add Command</button>
+    <div class="button-container">
+      <button pButton type="button" (click)="previousStep()">Previous</button>
+      <button pButton type="button" (click)="nextStep()">Next</button>
     </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      <input type="text" id="description" formControlName="description" class="form-control" />
-      <div *ngIf="f['description'].touched && f['description'].invalid" class="error">
-        <div *ngIf="f['description'].errors?.['required']">Description is required.</div>
-      </div>
+  </div>
+
+  <div *ngIf="step === 3">
+    <h3>Review Device</h3>
+    <div>
+      <h4>Device Details</h4>
+      <p><strong>Name:</strong> {{ deviceForm.value.deviceName }}</p>
+      <p><strong>Description:</strong> {{ deviceForm.value.description }}</p>
+      <p><strong>Industry Type:</strong> {{ deviceForm.value.industryType }}</p>
+      <p><strong>Manufacturer:</strong> {{ deviceForm.value.manufacturer }}</p>
+      <p><strong>URL:</strong> {{ deviceForm.value.url }}</p>
+      <p><strong>Status:</strong> {{ deviceForm.value.deviceStatus }}</p>
     </div>
-    <div class="form-group">
-      <label for="status">Status</label>
-      <select id="status" formControlName="status" class="form-control">
-        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="industryType">Industry Type</label>
-      <select id="industryType" formControlName="industryType" class="form-control">
-        <option *ngFor="let type of industryTypes" [value]="type">{{ type }}</option>
-      </select>
-      <div *ngIf="f['industryType'].touched && f['industryType'].invalid" class="error">
-        <div *ngIf="f['industryType'].errors?.['required']">Industry Type is required.</div>
+    <div *ngIf="commands.length > 0">
+      <h4>Commands</h4>
+      <div
+        *ngFor="let command of commands; let i = index"
+        class="command-review"
+      >
+        <h5>Command {{ i + 1 }}</h5>
+        <p><strong>Operation:</strong> {{ command.operation }}</p>
+        <p><strong>Description:</strong> {{ command.description }}</p>
+        <p><strong>Result:</strong> {{ command.result }}</p>
+        <p><strong>Format:</strong> {{ command.format }}</p>
+        <p><strong>Command:</strong> {{ command.command.command }}</p>
+        <div *ngIf="command.command.parameters.length > 0">
+          <h6>Parameters</h6>
+          <ul>
+            <li *ngFor="let param of command.command.parameters">
+              <strong>Name:</strong> {{ param.name }} |
+              <strong>Description:</strong> {{ param.description }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="button-container">
-      <button type="submit" [disabled]="deviceForm.invalid">Create Device</button>
+      <button pButton type="button" (click)="previousStep()">Previous</button>
+      <button pButton type="button" (click)="createDevice()">
+        Create Device
+      </button>
     </div>
     <div *ngIf="successMessage" class="success-card">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  </form>
+  </div>
 </div>

@@ -1,22 +1,55 @@
 <p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
 
-<div *ngIf="device" class="device-container">
-  <div class="device-section">
-    <h2>Device Information</h2>
-    <p>Name: {{ device.name }}</p>
-    <p>Description: {{ device.description }}</p>
-    <p>Device Code: {{ device.deviceCode }}</p>
-    <p>Status: {{ device.status }}</p>
-  </div>
-  <div class="device-section owner-info">
-    <h3>Owner Information</h3>
-    <p>Name: {{ device.user.name }}</p>
-    <p>Email: {{ device.user.email }}</p>
+<div *ngIf="device; else noDevice">
+  <div class="device-container">
+    <div class="top-row">
+      <p-card header="Device Information" class="device-section">
+        <div class="p-grid">
+          <div class="p-col-12"><strong>Name:</strong> {{ device.deviceName }}</div>
+          <div class="p-col-12"><strong>Description:</strong> {{ device.description }}</div>
+          <div class="p-col-12"><strong>Device Code:</strong> {{ device.deviceCode }}</div>
+          <div class="p-col-12"><strong>Status:</strong> {{ device.deviceStatus }}</div>
+          <div class="p-col-12"><strong>Industry Type:</strong> {{ device.industryType }}</div>
+          <div class="p-col-12"><strong>Manufacturer:</strong> {{ device.manufacturer }}</div>
+          <div class="p-col-12"><strong>URL:</strong> <a [href]="device.url">{{ device.url }}</a></div>
+        </div>
+      </p-card>
+      <p-card header="Owner Information" class="device-section owner-info">
+        <div class="p-grid">
+          <div class="p-col-12"><strong>Name:</strong> {{ device.user.name }}</div>
+          <div class="p-col-12"><strong>Email:</strong> {{ device.user.email }}</div>
+        </div>
+      </p-card>
+    </div>
+    <div class="bottom-row">
+      <p-panel header="Commands" class="commands-section">
+        <p-accordion>
+          <p-accordionTab *ngFor="let command of device.commands" [header]="command.operation">
+            <div class="command-details-container">
+              <div class="command-block">
+                <p><strong>Operation:</strong> {{ command.operation }}</p>
+                <p><strong>Description:</strong> {{ command.description }}</p>
+                <p><strong>Result:</strong> {{ command.result }}</p>
+                <p><strong>Format:</strong> {{ command.format }}</p>
+              </div>
+              <div class="command-block">
+                <h3>Command Details</h3>
+                <p><strong>Command:</strong> {{ command.command.command }}</p>
+                <div *ngFor="let parameter of command.command.parameters">
+                  <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
+                  <p><strong>Parameter Description:</strong> {{ parameter.description }}</p>
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+        </p-accordion>
+      </p-panel>
+    </div>
   </div>
 </div>
-<div *ngIf="errorMessage" class="error">
-  <p>{{ errorMessage }}</p>
-</div>
+<ng-template #noDevice>
+  <div class="error">{{ errorMessage }}</div>
+</ng-template>
 
 <!-- Device Monitoring Component -->
 <app-device-monitoring *ngIf="device" [deviceCode]="device.deviceCode"></app-device-monitoring>

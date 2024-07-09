@@ -13,6 +13,8 @@ import { Device } from '../../models/device.model';
 import { DeviceService } from '../../services/device-service';
 import { DevicePaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-device',
@@ -26,6 +28,8 @@ import { Router } from '@angular/router';
     HttpClientModule,
     CommonModule,
     FormsModule,
+    CardModule,
+    PanelModule
   ],
   templateUrl: './devices.component.html',
   styleUrls: ['./devices.component.css'],
@@ -102,7 +106,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   getSeverity(
-    status: string
+    deviceStatus: string
   ):
     | 'success'
     | 'info'
@@ -111,7 +115,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
     | 'secondary'
     | 'contrast'
     | undefined {
-    switch (status) {
+    switch (deviceStatus) {
       case 'OFF':
         return 'danger';
       case 'ON':

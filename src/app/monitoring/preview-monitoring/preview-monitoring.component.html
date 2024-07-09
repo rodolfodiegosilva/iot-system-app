@@ -32,8 +32,8 @@
       </ng-template>
     </p-table>
     <div class="button-container">
-      <button (click)="confirmMonitoring()" class="btn btn-primary">Confirm</button>
-      <button (click)="cancel()" class="btn btn-secondary">Cancel</button>
+      <button (click)="confirmMonitoring()" class="btn btn-confirm">Confirm</button>
+      <button (click)="cancel()" class="btn btn-cancel">Cancel</button>
     </div>
     <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
   </div>
