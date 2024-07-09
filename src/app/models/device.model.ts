@@ -1,13 +1,16 @@
 // src/app/models/device.model.ts
+import { CommandDescription } from './command-description.model';
 import { User } from './user.model';
-
 export interface Device {
   id: number;
-  name: string;
-  description: string;
-  status: string;
   deviceCode: string;
-  user: User;
+  deviceName: string;
+  description: string;
   industryType: string;
+  manufacturer: string;
+  url: string;
+  deviceStatus: string;
+  commands: CommandDescription[];
+  user: User;
   createdAt: string;
 }

@@ -5,8 +5,12 @@ import { DeviceService } from '../../services/device-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
+import { ButtonModule } from 'primeng/button';
+import { AccordionModule } from 'primeng/accordion';
 import { MenuItem } from 'primeng/api';
-import { DeviceMonitoringComponent } from '../device-monitoring/device-monitoring.component'; // Import DeviceMonitoringComponent
+import { DeviceMonitoringComponent } from '../device-monitoring/device-monitoring.component';
 
 @Component({
   selector: 'app-device',
@@ -17,8 +21,12 @@ import { DeviceMonitoringComponent } from '../device-monitoring/device-monitorin
     CommonModule,
     FormsModule,
     BreadcrumbModule,
-    DeviceMonitoringComponent // Add DeviceMonitoringComponent to imports
-  ]
+    CardModule,
+    PanelModule,
+    ButtonModule,
+    AccordionModule,
+    DeviceMonitoringComponent,
+  ],
 })
 export class DeviceComponent implements OnInit {
   device: Device | undefined;
@@ -30,7 +38,7 @@ export class DeviceComponent implements OnInit {
     private deviceService: DeviceService,
     private router: Router
   ) {
-    this.breadcrumbItems = []; // Inicialização
+    this.breadcrumbItems = [];
   }
 
   ngOnInit(): void {
@@ -38,29 +46,29 @@ export class DeviceComponent implements OnInit {
     if (deviceCode) {
       this.deviceService.getDeviceByCode(deviceCode).subscribe({
         next: (data: Device) => {
-          console.log('Device data received:', data); // Debug log
+          console.log('Device data received:', data);
           this.device = data;
           this.errorMessage = undefined;
-          this.setBreadcrumbItems(); // Set breadcrumbs after data is loaded
+          this.setBreadcrumbItems();
         },
         error: (error) => {
-          console.error('Error fetching device data:', error); // Error log
-          this.errorMessage = 'Device not found'; // Set error message
-          this.device = undefined; // Clear any previous device data
+          console.error('Error fetching device data:', error);
+          this.errorMessage = 'Device not found';
+          this.device = undefined;
         },
       });
     }
 
     this.breadcrumbItems = [
       { label: 'Devices', routerLink: ['/devices'] },
-      { label: 'Device Detail', disabled: true }
+      { label: 'Device Detail', disabled: true },
     ];
   }
 
   setBreadcrumbItems(): void {
     this.breadcrumbItems = [
       { label: 'Devices', routerLink: ['/devices'] },
-      { label: this.device?.name || 'Device Detail', disabled: true }
+      { label: this.device?.deviceName || 'Device Detail', disabled: true },
     ];
   }
 }

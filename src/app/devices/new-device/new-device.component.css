@@ -1,82 +1,175 @@
 .main-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group,
+.clone-section {
+  margin-bottom: 15px;
+}
+
+.form-group label,
+.clone-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input,
+.form-group select,
+.clone-section select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.clone-section select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.button-container {
+  text-align: center;
+}
+
+button[type="submit"],
+button[type="button"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+  background-color: #0056b3;
+}
+
+.success-card {
+  background-color: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #d6e9c6;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.error {
+  color: #a94442;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.command-group,
+.parameter-group {
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.command-review {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.command-review h5 {
+  margin-top: 0;
+}
+
+.command-review ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.command-review ul li {
+  background-color: #f1f1f1;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.command-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.command,
+.parameter {
+  width: 90%;
+}
+
+.delete-command-btn {
+  width: 10% !important;
+  height: 100% !important;
+}
+
+.delete-command-btn button {
+  color: red;
+  border: none;
+  background-color: none;
+}
+
+.parameter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-parameter-btn {
+  width: 10% !important;
+  height: 100% !important;
+}
+
+.delete-parameter-btn button {
+  color: red;
+  border: none;
+  background-color: none;
+}
+
+.parameter-header .form-group {
+  flex: 1;
+}
+
+.add-command-btn,
+.add-parameter-btn {
+  background-color: none;
+  border: none;
+  color: rgb(81, 205, 81);
+}
+
+@media (max-width: 768px) {
   h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+    font-size: 1.3em;
   }
-  
-  .form-group, .clone-section {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label, .clone-section label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .form-group input,
-  .form-group select,
-  .clone-section select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .form-group input:focus,
-  .form-group select:focus,
-  .clone-section select:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .button-container {
-    text-align: center;
-  }
-  
-  button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .success-card {
-    background-color: #dff0d8;
-    color: #3c763d;
-    border: 1px solid #d6e9c6;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  .error {
-    color: #a94442;
-    background-color: #f2dede;
-    border: 1px solid #ebccd1;
-    padding: 15px;
-    margin-top: 20px;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
+}

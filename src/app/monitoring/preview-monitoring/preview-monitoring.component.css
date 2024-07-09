@@ -40,7 +40,6 @@ button {
   text-align: center;
 }
 
-/* Estilos responsivos */
 @media (max-width: 768px) {
   .title h2 {
     font-size: 25px;
