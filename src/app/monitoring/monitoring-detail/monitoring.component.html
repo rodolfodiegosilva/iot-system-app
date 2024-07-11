@@ -1,26 +1,55 @@
 <p-breadcrumb [model]="breadcrumbItems"></p-breadcrumb>
 
 <div *ngIf="monitoring" class="monitoring-container">
-  <div class="monitoring-section">
-    <h2>Monitoring Information</h2>
-    <p><strong>Code:</strong> {{ monitoring.monitoringCode }}</p>
-    <p><strong>Status:</strong> {{ monitoring.status }}</p>
-    <p><strong>Created At:</strong> {{ monitoring.createdAt | date: 'short' }}</p>
-    <p><strong>Updated At:</strong> {{ monitoring.updatedAt | date: 'short' }}</p>
+  <div class="header-section">
+    <div class="monitoring-section">
+      <h2>Monitoring Information</h2>
+      <p><strong>Code:</strong> {{ monitoring.monitoringCode }}</p>
+      <p><strong>Description:</strong> {{ monitoring.description }}</p>
+      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.status === 'ON', 'status-off': monitoring.status === 'OFF'}">{{ monitoring.status }}</span></p>
+      <p><strong>Created At:</strong> {{ monitoring.createdAt | date: 'short' }}</p>
+      <p><strong>Updated At:</strong> {{ monitoring.updatedAt | date: 'short' }}</p>
+    </div>
+    <div class="monitoring-section">
+      <h2>User Information</h2>
+      <p><strong>Name:</strong> {{ monitoring.user.name }}</p>
+      <p><strong>Email:</strong> {{ monitoring.user.email }}</p>
+      <p><strong>Username:</strong> {{ monitoring.user.username }}</p>
+      <p><strong>Role:</strong> {{ monitoring.user.role }}</p>
+    </div>
   </div>
-  <div class="monitoring-section">
-    <h3>User Information</h3>
-    <p><strong>Name:</strong> {{ monitoring.user.name }}</p>
-    <p><strong>Email:</strong> {{ monitoring.user.email }}</p>
+  <div class="panel">
+    <div class="panel-section">
+      <h3>Device Information</h3>
+      <p><strong>Name:</strong> {{ monitoring.device.deviceName }}</p>
+      <p><strong>Description:</strong> {{ monitoring.device.description }}</p>
+      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.device.deviceStatus === 'ON', 'status-off': monitoring.device.deviceStatus === 'OFF'}">{{ monitoring.device.deviceStatus }}</span></p>
+      <p><strong>Device Code:</strong> {{ monitoring.device.deviceCode }}</p>
+      <p><strong>Manufacturer:</strong> {{ monitoring.device.manufacturer }}</p>
+      <p><strong>Created At:</strong> {{ monitoring.device.createdAt | date: 'short' }}</p>
+      <button (click)="viewDevice(monitoring.device.deviceCode)" class="view-device-button">
+        <i class="fas fa-eye"></i> View Device
+      </button>
+    </div>
+    <div class="panel-section" *ngIf="filteredCommands.length">
+      <h3>Device Commands</h3>
+      <div *ngFor="let command of filteredCommands" class="command-section">
+        <p><strong>Operation:</strong> {{ command.operation }}</p>
+        <p><strong>Description:</strong> {{ command.description }}</p>
+        <button 
+          (click)="sendCommand(command)" 
+          [ngClass]="{'sending': loadingCommand, 'success': commandResponse === 'Command sent successfully', 'error': commandResponse === 'Error sending command'}"
+          class="send-command-button">
+          <i [class.fa-spinner]="loadingCommand" class="fas" [class.fa-cog]="!loadingCommand"></i> {{ loadingCommand ? 'Sending...' : 'Send Command' }}
+        </button>
+        <div *ngIf="loadingCommand" class="progress-bar">
+          <div class="progress"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="monitoring-section">
-    <h3>Device Information</h3>
-    <p><strong>Name:</strong> {{ monitoring.device.name }}</p>
-    <p><strong>Description:</strong> {{ monitoring.device.description }}</p>
-    <p><strong>Status:</strong> {{ monitoring.device.status }}</p>
-    <p><strong>Device Code:</strong> {{ monitoring.device.deviceCode }}</p>
-    <p><strong>Created At:</strong> {{ monitoring.device.createdAt | date: 'short' }}</p>
-    <button (click)="viewDevice(monitoring.device.deviceCode)" class="view-device-button">View Device</button>
+  <div *ngIf="commandResponse" class="response-message" [ngClass]="{'success-message': commandResponse === 'Command sent successfully', 'error-message': commandResponse === 'Error sending command'}">
+    <p>{{ commandResponse }}</p>
   </div>
 </div>
 <div *ngIf="errorMessage" class="error">

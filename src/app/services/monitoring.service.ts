@@ -40,4 +40,8 @@ export class MonitoringService {
   createMonitoring(request: MonitoringRequest[]): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}`, request);
   }
+
+  sendDeviceCommand(deviceUrl: string, command: any): Observable<any> {
+    return this.http.post<any>(`${deviceUrl}`, command);
+  }
 }
