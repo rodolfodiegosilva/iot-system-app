@@ -16,7 +16,8 @@
       [totalRecords]="totalRecords"
       [globalFilterFields]="[
         'deviceCode',
-        'name',
+        'deviceName',
+        'deviceStatus',
         'description',
         'industryType',
         'user.name',
@@ -34,11 +35,11 @@
           <th pSortableColumn="deviceCode">
             Device Code <p-sortIcon field="deviceCode"></p-sortIcon>
           </th>
-          <th pSortableColumn="status">
-            Status <p-sortIcon field="status"></p-sortIcon>
+          <th pSortableColumn="deviceStatus">
+            deviceStatus <p-sortIcon field="deviceStatus"></p-sortIcon>
           </th>
-          <th pSortableColumn="name">
-            Name <p-sortIcon field="name"></p-sortIcon>
+          <th pSortableColumn="deviceName">
+            deviceName <p-sortIcon field="deviceName"></p-sortIcon>
           </th>
           <th pSortableColumn="description">
             Description <p-sortIcon field="description"></p-sortIcon>
@@ -66,7 +67,7 @@
           </th>
           <th>
             <p-columnFilter
-              field="status"
+              field="deviceStatus"
               matchMode="equals"
               [showMenu]="false"
             >
@@ -78,7 +79,7 @@
                 <p-dropdown
                   [(ngModel)]="selectedStatus"
                   [options]="statuses"
-                  (onChange)="onFilterDropdown($event, 'status')"
+                  (onChange)="onFilterDropdown($event, 'deviceStatus')"
                   placeholder="Select One"
                   [showClear]="true"
                 >
@@ -95,9 +96,9 @@
           <th>
             <p-columnFilter
               type="text"
-              field="name"
-              placeholder="Search by Name"
-              ariaLabel="Filter Name"
+              field="deviceName"
+              placeholder="Search by deviceName"
+              ariaLabel="Filter deviceName"
               (input)="onFilter($event, 'deviceName')"
             ></p-columnFilter>
           </th>
@@ -148,11 +149,11 @@
           <td>{{ device.deviceCode }}</td>
           <td>
             <p-tag
-              [value]="device.status"
-              [severity]="getSeverity(device.status)"
+              [value]="device.deviceStatus"
+              [severity]="getSeverity(device.deviceStatus)"
             ></p-tag>
           </td>
-          <td>{{ device.name }}</td>
+          <td>{{ device.deviceName }}</td>
           <td>{{ device.description }}</td>
           <td>{{ device.industryType }}</td>
           <td>{{ device.user.name }}</td>

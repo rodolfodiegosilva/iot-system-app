@@ -40,6 +40,13 @@ button {
   text-align: center;
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .title h2 {
     font-size: 25px;
