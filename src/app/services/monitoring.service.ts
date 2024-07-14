@@ -42,6 +42,8 @@ export class MonitoringService {
   }
 
   sendDeviceCommand(deviceUrl: string, command: any): Observable<any> {
+    console.log(command);
+    
     return this.http.post<any>(`${deviceUrl}`, command);
   }
 }

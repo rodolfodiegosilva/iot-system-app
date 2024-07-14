@@ -130,8 +130,8 @@
           <td>{{ monitoring.monitoringCode }}</td>
           <td>
             <p-tag
-              [value]="monitoring.status"
-              [severity]="getSeverity(monitoring.status)"
+              [value]="monitoring.monitoringStatus"
+              [severity]="getSeverity(monitoring.monitoringStatus)"
             ></p-tag>
           </td>
           <td>{{ monitoring.user.name }}</td>

@@ -48,7 +48,6 @@ export class MonitoringComponent implements OnInit, OnChanges {
     if (monitoringCode) {
       this.monitoringService.getMonitoringByCode(monitoringCode).subscribe({
         next: (data: any) => {
-          console.log('Monitoring data received:', data);
           this.monitoring = data;
           this.errorMessage = undefined;
           this.setBreadcrumbItems();
