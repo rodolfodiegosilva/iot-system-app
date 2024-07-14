@@ -18,7 +18,7 @@
       [totalRecords]="totalRecords"
       [globalFilterFields]="[
         'monitoringCode',
-        'status',
+        'monitoringStatus',
         'userName',
         'deviceName',
         'createdAt',
@@ -33,14 +33,14 @@
           <th pSortableColumn="monitoringCode">
             Monitoring Code <p-sortIcon field="monitoringCode"></p-sortIcon>
           </th>
-          <th pSortableColumn="status">
-            Status <p-sortIcon field="status"></p-sortIcon>
+          <th pSortableColumn="monitoringStatus">
+            Monitoring Status <p-sortIcon field="monitoringStatus"></p-sortIcon>
           </th>
           <th pSortableColumn="userName">
             User <p-sortIcon field="userName"></p-sortIcon>
           </th>
           <th pSortableColumn="deviceName">
-            Device <p-sortIcon field="deviceName"></p-sortIcon>
+            Device Name <p-sortIcon field="deviceName"></p-sortIcon>
           </th>
           <th pSortableColumn="createdAt">
             Created At <p-sortIcon field="createdAt"></p-sortIcon>
@@ -61,7 +61,7 @@
           </th>
           <th>
             <p-columnFilter
-              field="status"
+              field="monitoringStatus"
               matchMode="equals"
               [showMenu]="false"
             >
@@ -73,7 +73,7 @@
                 <p-dropdown
                   [(ngModel)]="selectedStatus"
                   [options]="statuses"
-                  (onChange)="onFilterDropdown($event, 'status')"
+                  (onChange)="onFilterDropdown($event, 'monitoringStatus')"
                   placeholder="Select One"
                   [showClear]="true"
                 >
@@ -131,12 +131,12 @@
           <td>{{ monitoring.monitoringCode }}</td>
           <td>
             <p-tag
-              [value]="monitoring.status"
-              [severity]="getSeverity(monitoring.status)"
+              [value]="monitoring.monitoringStatus"
+              [severity]="getSeverity(monitoring.monitoringStatus)"
             ></p-tag>
           </td>
           <td>{{ monitoring.user.name }}</td>
-          <td>{{ monitoring.device.name }}</td>
+          <td>{{ monitoring.device.deviceName }}</td>
           <td>{{ monitoring.createdAt | date: 'short' }}</td>
           <td>{{ monitoring.updatedAt | date: 'short' }}</td>
         </tr>

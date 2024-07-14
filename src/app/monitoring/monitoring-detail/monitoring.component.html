@@ -6,7 +6,7 @@
       <h2>Monitoring Information</h2>
       <p><strong>Code:</strong> {{ monitoring.monitoringCode }}</p>
       <p><strong>Description:</strong> {{ monitoring.description }}</p>
-      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.status === 'ON', 'status-off': monitoring.status === 'OFF'}">{{ monitoring.status }}</span></p>
+      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.monitoringStatus === 'ON', 'status-off': monitoring.monitoringStatus === 'OFF'}">{{ monitoring.monitoringStatus }}</span></p>
       <p><strong>Created At:</strong> {{ monitoring.createdAt | date: 'short' }}</p>
       <p><strong>Updated At:</strong> {{ monitoring.updatedAt | date: 'short' }}</p>
     </div>
