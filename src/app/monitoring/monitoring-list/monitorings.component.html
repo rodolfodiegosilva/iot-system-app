@@ -18,7 +18,7 @@
       [totalRecords]="totalRecords"
       [globalFilterFields]="[
         'monitoringCode',
-        'status',
+        'monitoringStatus',
         'userName',
         'deviceName',
         'createdAt',
@@ -33,8 +33,8 @@
           <th pSortableColumn="monitoringCode">
             Monitoring Code <p-sortIcon field="monitoringCode"></p-sortIcon>
           </th>
-          <th pSortableColumn="status">
-            Monitoring Status <p-sortIcon field="status"></p-sortIcon>
+          <th pSortableColumn="monitoringStatus">
+            Monitoring Status <p-sortIcon field="monitoringStatus"></p-sortIcon>
           </th>
           <th pSortableColumn="userName">
             User <p-sortIcon field="userName"></p-sortIcon>
@@ -61,7 +61,7 @@
           </th>
           <th>
             <p-columnFilter
-              field="status"
+              field="monitoringStatus"
               matchMode="equals"
               [showMenu]="false"
             >
@@ -73,7 +73,7 @@
                 <p-dropdown
                   [(ngModel)]="selectedStatus"
                   [options]="statuses"
-                  (onChange)="onFilterDropdown($event, 'status')"
+                  (onChange)="onFilterDropdown($event, 'monitoringStatus')"
                   placeholder="Select One"
                   [showClear]="true"
                 >

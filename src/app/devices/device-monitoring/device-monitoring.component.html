@@ -16,7 +16,6 @@
         'monitoringCode',
         'status',
         'userName',
-        'deviceName',
         'createdAt',
         'updatedAt'
       ]"
@@ -34,9 +33,6 @@
           </th>
           <th pSortableColumn="userName">
             User <p-sortIcon field="userName"></p-sortIcon>
-          </th>
-          <th pSortableColumn="deviceName">
-            Device <p-sortIcon field="deviceName"></p-sortIcon>
           </th>
           <th pSortableColumn="createdAt">
             Created At <p-sortIcon field="createdAt"></p-sortIcon>
@@ -94,15 +90,6 @@
           </th>
           <th>
             <p-columnFilter
-              type="text"
-              field="deviceName"
-              placeholder="Search by Device"
-              ariaLabel="Filter Device"
-              (input)="onFilter($event, 'deviceName')"
-            ></p-columnFilter>
-          </th>
-          <th>
-            <p-columnFilter
               type="date"
               field="createdAt"
               placeholder="Search by Created At"
@@ -135,7 +122,6 @@
             ></p-tag>
           </td>
           <td>{{ monitoring.user.name }}</td>
-          <td>{{ monitoring.device.name }}</td>
           <td>{{ monitoring.createdAt | date : "short" }}</td>
           <td>{{ monitoring.updatedAt | date : "short" }}</td>
         </tr>

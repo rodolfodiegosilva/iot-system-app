@@ -1,9 +1,10 @@
 // models/monitoring-request.model.ts
 
-import { DeviceStatus } from './device-status.enum';
+import { MonitoringStatus } from "./monitoring-status.enum";
+
 
 export interface MonitoringRequest {
   deviceCode: string;
-  status: DeviceStatus;
+  monitoringStatus: MonitoringStatus;
   description: string;
 }
