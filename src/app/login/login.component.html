@@ -1,28 +1,66 @@
-<!-- login.component.html -->
 <div class="main-container login-container">
-  <h2>Login</h2>
+  <h2 class="login-title">Login</h2>
   <form (ngSubmit)="login()" #loginForm="ngForm">
     <div class="form-group">
       <label for="username">Username</label>
-      <input type="text" id="username" [(ngModel)]="username" name="username" required #usernameField="ngModel">
-      <div *ngIf="usernameField.invalid && (usernameField.dirty || usernameField.touched)" class="error">
+      <input
+        type="text"
+        id="username"
+        [(ngModel)]="username"
+        name="username"
+        required
+        #usernameField="ngModel"
+      />
+      <div
+        *ngIf="
+          usernameField.invalid &&
+          (usernameField.dirty || usernameField.touched)
+        "
+        class="error"
+      >
         Username is required.
       </div>
     </div>
+
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password" required #passwordField="ngModel">
-      <div *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)" class="error">
+      <input
+        type="password"
+        id="password"
+        [(ngModel)]="password"
+        name="password"
+        required
+        #passwordField="ngModel"
+      />
+      <div
+        *ngIf="
+          passwordField.invalid &&
+          (passwordField.dirty || passwordField.touched)
+        "
+        class="error"
+      >
         Password is required.
       </div>
     </div>
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid"
+      class="login-btn"
+      [ngClass]="{ 'disabled-btn': loginForm.invalid }"
+    >
+      Login
+    </button>
+
     <div *ngIf="errorMessage" class="error">
       {{ errorMessage }}
     </div>
   </form>
+
   <div class="register-link">
-    <span>Don't have an account?</span>
-    <button (click)="navigateToRegister()" class="btn btn-link">Register</button>
+    <div>Don't have an account?</div>
+    <button (click)="navigateToRegister()" class="btn btn-link">
+      Register
+    </button>
   </div>
 </div>
