@@ -9,27 +9,27 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private authService: AuthService,private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    this.errorMessage = ''; // Clear previous error message
+    this.errorMessage = '';
     localStorage.removeItem('access_token');
     this.authService.login(this.username, this.password).subscribe(
-      response => {
+      (response) => {
         localStorage.setItem('access_token', response.token);
-        this.authService.fetchUserData().subscribe(userData => {
+        this.authService.fetchUserData().subscribe((userData) => {
           this.authService.setUserData(userData);
           this.authService.navigateToDashboard();
         });
       },
-      error => {
+      (error) => {
         if (error.status === 400 && error.error.message) {
           this.errorMessage = error.error.message;
         } else {
