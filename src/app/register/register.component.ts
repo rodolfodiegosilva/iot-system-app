@@ -33,7 +33,14 @@ export class RegisterComponent {
         name: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         username: ['', Validators.required],
-        password: ['', Validators.required],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            this.passwordPatternValidator(),
+          ],
+        ],
         confirmPassword: ['', Validators.required],
       },
       { validator: this.mustMatch('password', 'confirmPassword') }
@@ -42,6 +49,21 @@ export class RegisterComponent {
 
   get f() {
     return this.registerForm.controls;
+  }
+
+  passwordPatternValidator(): Validators {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value || '';
+      const hasNumber = /\d/.test(value);
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+      const passwordValid =
+        hasNumber && hasUpperCase && hasLowerCase && hasSpecialCharacter;
+
+      return !passwordValid ? { passwordStrength: true } : null;
+    };
   }
 
   register() {
@@ -55,7 +77,7 @@ export class RegisterComponent {
         this.successMessage = 'Registration successful';
         setTimeout(() => {
           this.authService.navigateToLogin();
-        }, 2000); // Redireciona após 1 segundo
+        }, 2000); // Redireciona após 2 segundos
       },
       (error) => {
         if (error.status === 400 && error.error.message) {
