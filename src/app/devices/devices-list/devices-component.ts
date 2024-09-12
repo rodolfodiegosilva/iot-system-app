@@ -78,6 +78,8 @@ export class DevicesComponent implements OnInit, OnDestroy {
       .getDevices(page, size, sortBy, sortDir, this.filters)
       .subscribe((data: DevicePaginatedData) => {
         this.devices = data.content;
+        console.log(this.devices);
+        
         this.totalRecords = data.totalElements;
         this.loading = false;
       });

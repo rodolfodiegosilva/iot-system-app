@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="description">Description</label>
         <input
@@ -54,6 +55,7 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="industryType">Industry Type</label>
         <select
@@ -61,6 +63,7 @@
           formControlName="industryType"
           class="form-control"
         >
+          <option value="" disabled selected>Select an industry type</option>
           <option *ngFor="let type of industryTypes" [value]="type">
             {{ type }}
           </option>
@@ -74,6 +77,7 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="manufacturer">Manufacturer</label>
         <input
@@ -91,6 +95,7 @@
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="url">URL</label>
         <input
@@ -101,8 +106,12 @@
         />
         <div *ngIf="f['url'].touched && f['url'].invalid" class="error">
           <div *ngIf="f['url'].errors?.['required']">URL is required.</div>
+          <div *ngIf="f['url'].errors?.['pattern']">
+            URL must follow the format: https://example.com
+          </div>
         </div>
       </div>
+
       <div class="form-group">
         <label for="deviceStatus">Status</label>
         <select
@@ -110,16 +119,27 @@
           formControlName="deviceStatus"
           class="form-control"
         >
+          <option value="" disabled selected>Select a status</option>
           <option *ngFor="let status of statuses" [value]="status">
             {{ status }}
           </option>
         </select>
+        <div
+          *ngIf="f['deviceStatus'].touched && f['deviceStatus'].invalid"
+          class="error"
+        >
+          <div *ngIf="f['deviceStatus'].errors?.['required']">
+            Status is required.
+          </div>
+        </div>
       </div>
+
       <div class="button-container">
         <button
           type="button"
           (click)="nextStep()"
           [disabled]="!deviceForm.valid && !selectedDeviceCode"
+          class="next-btn"
         >
           Next
         </button>
@@ -134,108 +154,155 @@
         class="command-header"
       >
         <div class="command">
-          <p-accordionTab [header]="'Command ' + (i + 1)">
-            <div class="form-group">
-              <label for="operation">Operation</label>
-              <input
-                type="text"
-                [(ngModel)]="command.operation"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <input
-                type="text"
-                [(ngModel)]="command.description"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="result">Result</label>
-              <input
-                type="text"
-                [(ngModel)]="command.result"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="format">Format</label>
-              <input
-                type="text"
-                [(ngModel)]="command.format"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="command">Command</label>
-              <input
-                type="text"
-                [(ngModel)]="command.command.command"
-                class="form-control"
-                required
-              />
-            </div>
-            <p-accordion>
-              <div
-                *ngFor="let param of command.command.parameters; let j = index"
-                class="parameter-header"
-              >
-                <div class="parameter">
-                  <p-accordionTab [header]="'Parameter ' + (j + 1)">
-                    <div class="form-group">
-                      <label for="name">Parameter Name</label>
-                      <input
-                        type="text"
-                        [(ngModel)]="param.name"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label for="description">Parameter Description</label>
-                      <input
-                        type="text"
-                        [(ngModel)]="param.description"
-                        class="form-control"
-                        required
-                      />
-                    </div>
-                  </p-accordionTab>
-                </div>
-                <div class="delete-parameter-btn">
-                  <button (click)="deleteParameter(i, j)">X</button>
-                </div>
+          <p-accordion
+            (onOpen)="toggleCommandExpansion(i, true)"
+            (onClose)="toggleCommandExpansion(i, false)"
+          >
+            <p-accordionTab [header]="'Command ' + (i + 1)">
+              <div class="form-group">
+                <label for="operation">Operation</label>
+                <input
+                  type="text"
+                  [(ngModel)]="command.operation"
+                  class="form-control"
+                  required
+                />
               </div>
-              <button
-              
-    class="add-parameter-btn"
-                (click)="addParameter(i)"
-              >Add Parameter</button>
-            </p-accordion>
-          </p-accordionTab>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input
+                  type="text"
+                  [(ngModel)]="command.description"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="result">Result</label>
+                <input
+                  type="text"
+                  [(ngModel)]="command.result"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="format">Format</label>
+                <input
+                  type="text"
+                  [(ngModel)]="command.format"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="command">Command</label>
+                <input
+                  type="text"
+                  [(ngModel)]="command.command.command"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <p-accordion>
+                <div
+                  *ngFor="
+                    let param of command.command.parameters;
+                    let j = index
+                  "
+                  class="parameter-header"
+                >
+                  <div>
+                    <div class="parameter">
+                      <p-accordionTab [header]="'Parameter ' + (j + 1)">
+                        <div class="form-group">
+                          <label for="name">Parameter Name</label>
+                          <input
+                            type="text"
+                            [(ngModel)]="param.name"
+                            class="form-control"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="description">Parameter Description</label>
+                          <input
+                            type="text"
+                            [(ngModel)]="param.description"
+                            class="form-control"
+                            required
+                          />
+                        </div>
+                      </p-accordionTab>
+                    </div>
+
+                    <div
+                      *ngIf="!param.name || !param.description"
+                      class="incomplete-message"
+                    >
+                      Parameter {{ j + 1 }} is incomplete
+                    </div>
+                  </div>
+                  <div class="delete-parameter-btn">
+                    <button (click)="deleteParameter(i, j)">Delete</button>
+                  </div>
+                </div>
+                <button class="add-parameter-btn" (click)="addParameter(i)">
+                  Add Parameter
+                </button>
+              </p-accordion>
+            </p-accordionTab>
+          </p-accordion>
+
+          <div
+            *ngIf="!commandExpanded[i] && isCommandIncomplete(i)"
+            class="incomplete-message"
+          >
+            Command Form {{ i + 1 }} is incomplete
+          </div>
         </div>
         <div class="delete-command-btn">
-          <button (click)="deleteCommand(i)">X</button>
+          <button (click)="deleteCommand(i)">Delete</button>
         </div>
       </div>
     </p-accordion>
-    <button
-    class="add-command-btn"
-      (click)="addCommand()"
-    >Add Command</button>
+
+    <button class="add-command-btn" (click)="addCommand()">Add Command</button>
+
     <div class="button-container">
       <button pButton type="button" (click)="previousStep()">Previous</button>
-      <button pButton type="button" (click)="nextStep()">Next</button>
+      <button
+        pButton
+        type="button"
+        (click)="nextStep()"
+        [disabled]="!isAllCommandsValid()"
+      >
+        Next
+      </button>
     </div>
   </div>
 
   <div *ngIf="step === 3">
     <h3>Review Device</h3>
+    <div class="form-group">
+      <label for="userMultiSelect">Select Users for your new Device (optinal)</label>
+      <p-multiSelect
+        id="userMultiSelect"
+        [options]="filteredUsers"
+        [(ngModel)]="selectedUsers"
+        [style]="{ width: '95%' }"
+        scrollHeight="200px"
+        placeholder="Search and select users"
+        (onFilter)="searchUsers($event.filter)"
+        optionLabel="username"
+      >
+        <ng-template let-user pTemplate="item">
+          {{ user.username }} | {{ user.email }} 
+        </ng-template>
+      </p-multiSelect>
+    </div>
+
     <div>
       <h4>Device Details</h4>
       <p><strong>Name:</strong> {{ deviceForm.value.deviceName }}</p>
