@@ -12,7 +12,7 @@ export interface Device {
   url: string;
   deviceStatus: string;
   commands: CommandDescription[];
-  user: User[];
+  users: User[];
   createdAt: string;
   createdBy: User;
 }

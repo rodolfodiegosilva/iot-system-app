@@ -3,41 +3,71 @@
 <div *ngIf="device; else noDevice">
   <div class="device-container">
     <div class="top-row">
-      <p-card header="Device Information" class="device-section">
+      <p-card class="device-section">
+        <h2 class="section-title">Device Information</h2>
         <div class="p-grid">
-          <div class="p-col-12"><strong>Name:</strong> {{ device.deviceName }}</div>
-          <div class="p-col-12"><strong>Description:</strong> {{ device.description }}</div>
-          <div class="p-col-12"><strong>Device Code:</strong> {{ device.deviceCode }}</div>
-          <div class="p-col-12"><strong>Status:</strong> {{ device.deviceStatus }}</div>
-          <div class="p-col-12"><strong>Industry Type:</strong> {{ device.industryType }}</div>
-          <div class="p-col-12"><strong>Manufacturer:</strong> {{ device.manufacturer }}</div>
-          <div class="p-col-12"><strong>URL:</strong> <a [href]="device.url">{{ device.url }}</a></div>
+          <div class="p-col-12">
+            <strong>Name:</strong> {{ device.deviceName }}
+          </div>
+          <div class="p-col-12">
+            <strong>Description:</strong> {{ device.description }}
+          </div>
+          <div class="p-col-12">
+            <strong>Device Code:</strong> {{ device.deviceCode }}
+          </div>
+          <div class="p-col-12">
+            <strong>Status:</strong> {{ device.deviceStatus }}
+          </div>
+          <div class="p-col-12">
+            <strong>Industry Type:</strong> {{ device.industryType }}
+          </div>
+          <div class="p-col-12">
+            <strong>Manufacturer:</strong> {{ device.manufacturer }}
+          </div>
+          <div class="p-col-12">
+            <strong>URL:</strong> <a [href]="device.url">{{ device.url }}</a>
+          </div>
         </div>
       </p-card>
-      <p-card header="Owner Information" class="device-section owner-info">
-        <div class="p-grid">
-          <div class="p-col-12"><strong>Name:</strong> {{ device.createdBy.name }}</div>
-          <div class="p-col-12"><strong>Email:</strong> {{ device.createdBy.email }}</div>
+
+      <p-card class="device-section owner-info">
+        <h2 class="section-title">Owners Information</h2>
+        <p>
+          <strong>Created By:</strong> {{ device.createdBy.name }} |
+          {{ device.createdBy.email }}
+        </p>
+        <h3 class="assigned-owners">Assigned Owners</h3>
+        <div class="related-users-grid" *ngIf="device.users.length > 0">
+          <div *ngFor="let user of device.users" class="user-entry-grid">
+            {{ user.email }} | {{ user.name }}
+          </div>
         </div>
       </p-card>
     </div>
     <div class="bottom-row">
       <p-panel header="Commands" class="commands-section">
         <p-accordion>
-          <p-accordionTab *ngFor="let command of device.commands" [header]="command.operation">
+          <p-accordionTab
+            *ngFor="let command of device.commands"
+            [header]="command.operation"
+          >
             <div class="command-details-container">
               <div class="command-block">
+                <h3>Description</h3>
                 <p><strong>Operation:</strong> {{ command.operation }}</p>
                 <p><strong>Description:</strong> {{ command.description }}</p>
                 <p><strong>Result:</strong> {{ command.result }}</p>
                 <p><strong>Format:</strong> {{ command.format }}</p>
               </div>
               <div class="command-block">
-                <h3>Command Details</h3>
+                <h3 class="assigned-owners">Command Details</h3>
                 <p><strong>Command:</strong> {{ command.command.command }}</p>
                 <div *ngFor="let parameter of command.command.parameters">
                   <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
-                  <p><strong>Parameter Description:</strong> {{ parameter.description }}</p>
+                  <p>
+                    <strong>Parameter Description:</strong>
+                    {{ parameter.description }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -47,9 +77,12 @@
     </div>
   </div>
 </div>
+
 <ng-template #noDevice>
   <div class="error">{{ errorMessage }}</div>
 </ng-template>
 
-<!-- Device Monitoring Component -->
-<app-device-monitoring *ngIf="device" [deviceCode]="device.deviceCode"></app-device-monitoring>
+<app-device-monitoring
+  *ngIf="device"
+  [device]="device"
+></app-device-monitoring>

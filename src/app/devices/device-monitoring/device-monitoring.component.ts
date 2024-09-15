@@ -13,6 +13,7 @@ import { Monitoring } from '../../models/monitoring.model';
 import { DeviceService } from '../../services/device-service';
 import { PaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
+import { Device } from '../../models/device.model';
 
 @Component({
   selector: 'app-device-monitoring',
@@ -31,7 +32,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./device-monitoring.component.css'],
 })
 export class DeviceMonitoringComponent implements OnInit, OnDestroy {
-  @Input() deviceCode!: string;
+  @Input() device!: Device;
   monitorings: Monitoring[] = [];
   loading: boolean = true;
   totalRecords: number = 0;
@@ -74,7 +75,7 @@ export class DeviceMonitoringComponent implements OnInit, OnDestroy {
     const sortDir = event.sortOrder === 1 ? 'asc' : 'desc';
 
     this.deviceService
-      .getMonitorings(this.deviceCode, page, size, sortBy, sortDir, this.filters)
+      .getMonitorings(this.device.deviceCode, page, size, sortBy, sortDir, this.filters)
       .subscribe((data: PaginatedData) => {
         this.monitorings = data.content;
         this.totalRecords = data.totalElements;
@@ -112,5 +113,10 @@ export class DeviceMonitoringComponent implements OnInit, OnDestroy {
       default:
         return 'secondary';
     }
+  }
+  navigateToPreview() {
+    this.router.navigate(['/monitoring/preview'], {
+      state: { selectedDevices: [this.device] },
+    });
   }
 }
