@@ -46,7 +46,10 @@ export class DeviceComponent implements OnInit {
     if (deviceCode) {
       this.deviceService.getDeviceByCode(deviceCode).subscribe({
         next: (data: Device) => {
-          console.log('Device data received:', data);
+          data.users = data.users.filter(
+            (user) => user.email !== data.createdBy.email
+          );
+
           this.device = data;
           this.errorMessage = undefined;
           this.setBreadcrumbItems();
@@ -70,5 +73,12 @@ export class DeviceComponent implements OnInit {
       { label: 'Devices', routerLink: ['/devices'] },
       { label: this.device?.deviceName || 'Device Detail', disabled: true },
     ];
+  }
+
+  navigateToPreview() {
+
+    this.router.navigate(['/monitoring/preview'], {
+      state: { selectedDevices: [this.device] },
+    });
   }
 }

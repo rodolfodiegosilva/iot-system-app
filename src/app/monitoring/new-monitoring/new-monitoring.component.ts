@@ -97,10 +97,21 @@ export class NewMonitoringComponent implements OnInit, OnDestroy {
   }
 
   navigateToPreview() {
-    this.router.navigate(['/monitoring/preview'], { state: { selectedDevices: this.selectedDevices } });
+    this.router.navigate(['/monitoring/preview'], {
+      state: { selectedDevices: this.selectedDevices },
+    });
   }
 
-  getSeverity(status: string): "success" | "info" | "warning" | "danger" | "secondary" | "contrast" | undefined {
+  getSeverity(
+    status: string
+  ):
+    | 'success'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'secondary'
+    | 'contrast'
+    | undefined {
     switch (status) {
       case 'OFF':
         return 'danger';
