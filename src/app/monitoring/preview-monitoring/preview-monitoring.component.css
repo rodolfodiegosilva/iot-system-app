@@ -1,20 +1,49 @@
-/* preview-monitoring.component.css */
 .main-container {
   padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .card {
   padding: 20px;
   border-radius: 8px;
+  background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
 .title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
   margin-bottom: 20px;
+}
+
+.p-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.p-table th,
+.p-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.p-table th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+}
+
+.custom-dropdown,
+.input-description {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .button-container {
@@ -24,53 +53,91 @@
   margin-top: 20px;
 }
 
-button {
-  padding: 8px 16px;
+.btn {
+  padding: 10px 20px;
   font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.input-description {
-  width: 100% !important;
+.btn-confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}
+
+.success-message,
+.error-message {
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .success-message {
   color: green;
-  font-weight: bold;
-  margin-top: 20px;
-  text-align: center;
 }
 
 .error-message {
   color: red;
-  font-weight: bold;
-  margin-top: 20px;
-  text-align: center;
+}
+
+.invalid-field {
+  border: 2px solid red;
+  background-color: #ffe5e5;
 }
 
 @media (max-width: 768px) {
-  .title h2 {
-    font-size: 25px;
-  }
-
   .main-container {
     padding: 10px;
   }
 
   .card {
-    padding: 10px;
+    padding: 15px;
   }
 
   .button-container {
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  button {
+  .btn {
     width: 100%;
-    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
-  table th, table td {
+  .p-table th,
+  .p-table td {
     display: block;
     width: 100%;
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 8px 15px;
   }
 }
