@@ -9,7 +9,7 @@ import {
 import { DeviceService } from '../../services/device-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Device } from '../../models/device.model';
+import { Device, DeviceRequest } from '../../models/device.model';
 import { DeviceStatus } from '../../models/device-status.enum';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CommandDescription } from '../../models/command-description.model';
@@ -17,11 +17,22 @@ import { Command } from '../../models/command.model';
 import { Parameter } from '../../models/parameter.model';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
+import { SimpleUser } from '../../models/user.model';
+import { UserService } from '../../services/user-service';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-new-device',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, BreadcrumbModule, AccordionModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BreadcrumbModule,
+    AccordionModule,
+    ButtonModule,
+    MultiSelectModule,
+  ],
   templateUrl: './new-device.component.html',
   styleUrls: ['./new-device.component.css'],
 })
@@ -35,12 +46,18 @@ export class NewDeviceComponent implements OnInit {
   devices: Device[] = [];
   selectedDeviceCode: string = '';
   commands: CommandDescription[] = [];
+  commandExpanded: boolean[] = [];
+  parameterExpanded: boolean[] = [];
 
-  statuses = Object.values(DeviceStatus); // Utilizando o enum
+  filteredUsers: SimpleUser[] = [];
+  selectedUsers: SimpleUser[] = [];
+
+  statuses = Object.values(DeviceStatus);
 
   constructor(
     private fb: FormBuilder,
     private deviceService: DeviceService,
+    private userService: UserService,
     private router: Router
   ) {
     this.deviceForm = this.fb.group({
@@ -48,7 +65,7 @@ export class NewDeviceComponent implements OnInit {
       description: ['', Validators.required],
       industryType: ['', Validators.required],
       manufacturer: ['', Validators.required],
-      url: ['', Validators.required],
+      url: ['', [Validators.required, Validators.pattern('https?://.+')]],
       deviceStatus: [DeviceStatus.ON, Validators.required],
     });
 
@@ -67,38 +84,137 @@ export class NewDeviceComponent implements OnInit {
     this.deviceService.getAllDevices().subscribe((devices) => {
       this.devices = devices;
     });
+    this.searchUsers('');
   }
 
   get f() {
     return this.deviceForm.controls;
   }
 
+  searchUsers(filter: string) {
+    this.userService.searchUsers(filter).subscribe({
+      next: (users: SimpleUser[]) => {
+        this.filteredUsers = users.map((user) => ({
+          username: user.username,
+          email: user.email,
+        }));
+      },
+      error: (error) => {
+        console.error('Erro ao buscar usuários:', error);
+      },
+      complete: () => {
+        console.log('Busca de usuários concluída.');
+      },
+    });
+  }
+
   addCommand() {
     const commandGroup: CommandDescription = {
-      id: 0,
       operation: '',
       description: '',
       result: '',
       format: '',
       command: {
-        id: 0,
         command: '',
-        parameters: [{ id: 0, name: '', description: '' }]
-      }
+        parameters: [{ name: '', description: '' }],
+      },
     };
     this.commands.push(commandGroup);
+    this.commandExpanded.push(true);
   }
 
   addParameter(commandIndex: number) {
-    this.commands[commandIndex].command.parameters.push({ id: 0, name: '', description: '' });
+    this.commands[commandIndex].command.parameters.push({
+      name: '',
+      description: '',
+    });
   }
 
-  removeCommand(index: number) {
+  deleteCommand(index: number) {
     this.commands.splice(index, 1);
+    this.commandExpanded.splice(index, 1);
   }
 
-  removeParameter(commandIndex: number, paramIndex: number) {
+  deleteParameter(commandIndex: number, paramIndex: number) {
     this.commands[commandIndex].command.parameters.splice(paramIndex, 1);
+  }
+
+  cloneDevice(deviceCode: string) {
+    const device = this.devices.find((d) => d.deviceCode === deviceCode);
+
+    if (!device) {
+      this.errorMessage = 'Device not found';
+      return;
+    }
+
+    this.deviceForm.patchValue({
+      deviceName: `${device.deviceName} - Clone`,
+      description: device.description,
+      industryType: device.industryType,
+      manufacturer: device.manufacturer,
+      url: device.url,
+      deviceStatus: device.deviceStatus,
+    });
+
+    this.commands = this.cloneCommands(device.commands);
+  }
+
+  cloneCommands(commands: CommandDescription[]): CommandDescription[] {
+    return commands.map((cmd: CommandDescription) => ({
+      operation: cmd.operation,
+      description: cmd.description,
+      result: cmd.result,
+      format: cmd.format,
+      command: {
+        command: cmd.command.command,
+        parameters: cmd.command.parameters.map((param: Parameter) => ({
+          name: param.name,
+          description: param.description,
+        })),
+      },
+    }));
+  }
+
+  isCommandValid(index: number): boolean {
+    const command = this.commands[index];
+    return (
+      !!command.operation &&
+      !!command.description &&
+      !!command.result &&
+      !!command.format &&
+      !!command.command.command
+    );
+  }
+
+  isCommandIncomplete(index: number): boolean {
+    const command = this.commands[index];
+    return (
+      !command.operation ||
+      !command.description ||
+      !command.result ||
+      !command.format ||
+      !command.command.command
+    );
+  }
+
+  isAllCommandsValid(): boolean {
+    if (this.commands.length === 0) {
+      return false;
+    }
+
+    for (let i = 0; i < this.commands.length; i++) {
+      if (!this.isCommandValid(i)) {
+        return false;
+      }
+
+      for (let param of this.commands[i].command.parameters) {
+        if (!param.name || !param.description) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   setStep(step: number) {
@@ -121,61 +237,46 @@ export class NewDeviceComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
 
-    if (this.deviceForm.invalid) {
+    if (this.deviceForm.invalid || !this.isAllCommandsValid()) {
       return;
     }
+    const selectedUsernames = this.selectedUsers.map((user) => user.username);
 
-    const deviceData: Device = {
-      id: 0,
-      deviceCode: '',
+    const deviceData: DeviceRequest = {
       ...this.deviceForm.value,
       commands: this.commands,
-      user: null,
-      createdAt: new Date().toISOString()
+      usernames: selectedUsernames,
     };
 
-    this.deviceService.createDevice(deviceData).subscribe(
-      (response) => {
+    this.deviceService.createDevice(deviceData).subscribe({
+      next: (response: Device) => {
         const deviceCode = response.deviceCode;
         this.successMessage = 'Device created successfully';
         setTimeout(() => {
           this.router.navigate(['/device', deviceCode]);
-        }, 1000); // Redireciona após 1 segundo
+        }, 1000);
       },
-      (error) => {
+      error: (error: any) => {
         this.errorMessage = 'An error occurred while creating the device.';
-      }
-    );
+        console.error('Erro ao criar o dispositivo:', error);
+      },
+      complete: () => {
+        console.log('Criação do dispositivo concluída.');
+      },
+    });
   }
 
-  cloneDevice(deviceCode: string) {
-    const device = this.devices.find(d => d.deviceCode === deviceCode);
-    if (device) {
-      this.deviceForm.patchValue({
-        deviceName: device.deviceName,
-        description: device.description,
-        industryType: device.industryType,
-        manufacturer: device.manufacturer,
-        url: device.url,
-        deviceStatus: device.deviceStatus
-      });
-  
-      // Clonar comandos
-      this.commands = device.commands.map((cmd: CommandDescription) => ({
-        ...cmd,
-        command: {
-          ...cmd.command,
-          parameters: cmd.command.parameters.map((param: Parameter) => ({ ...param }))
-        }
-      }));
-    }
+  toggleCommandExpansion(index: number, isExpanded: boolean): void {
+    this.commandExpanded[index] = isExpanded;
+    this.isCommandIncomplete(index);
   }
 
-  deleteCommand(index: number) {
-    this.commands.splice(index, 1);
+  isParameterIncomplete(commandIndex: number, paramIndex: number): boolean {
+    const param = this.commands[commandIndex].command.parameters[paramIndex];
+    return !param.name || !param.description;
   }
 
-  deleteParameter(commandIndex: number, paramIndex: number) {
-    this.commands[commandIndex].command.parameters.splice(paramIndex, 1);
+  toggleParameterExpansion(index: number, isExpanded: boolean): void {
+    this.parameterExpanded[index] = isExpanded;
   }
 }

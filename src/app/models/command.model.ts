@@ -3,7 +3,6 @@
 import { Parameter } from "./parameter.model";
 
 export interface Command {
-  id: number;
   command: string;
   parameters: Parameter[];
 }

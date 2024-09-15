@@ -5,7 +5,7 @@ import {
   DevicePaginatedData,
   PaginatedData,
 } from '../models/paginated-data.model';
-import { Device } from '../models/device.model';
+import { Device, DeviceRequest } from '../models/device.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -40,7 +40,7 @@ export class DeviceService {
     return this.http.get<Device>(`${this.baseUrl}/${deviceCode}`);
   }
 
-  createDevice(device: Device): Observable<Device> {
+  createDevice(device: DeviceRequest): Observable<Device> {
     return this.http.post<Device>(`${this.baseUrl}`, device);
   }
 

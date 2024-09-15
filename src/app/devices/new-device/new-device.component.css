@@ -58,11 +58,18 @@ button[type="button"] {
   cursor: pointer;
   font-size: 16px;
   margin: 5px;
+  transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover,
 button[type="button"]:hover {
   background-color: #0056b3;
+}
+
+button[type="submit"]:disabled,
+button[type="button"]:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 .success-card {
@@ -126,7 +133,7 @@ button[type="button"]:hover {
 
 .command,
 .parameter {
-  width: 90%;
+  width: 100%;
 }
 
 .delete-command-btn {
@@ -137,24 +144,22 @@ button[type="button"]:hover {
 .delete-command-btn button {
   color: red;
   border: none;
-  background-color: none;
+  background-color: transparent;
 }
 
 .parameter-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-around;
 }
-
 .delete-parameter-btn {
-  width: 10% !important;
-  height: 100% !important;
+  margin-left: 10px;
 }
 
 .delete-parameter-btn button {
   color: red;
   border: none;
-  background-color: none;
+  background-color: transparent;
 }
 
 .parameter-header .form-group {
@@ -163,13 +168,55 @@ button[type="button"]:hover {
 
 .add-command-btn,
 .add-parameter-btn {
-  background-color: none;
+  background-color: transparent;
   border: none;
   color: rgb(81, 205, 81);
+  cursor: pointer;
+}
+
+.incomplete-message {
+  color: red;
+  margin-top: 5px;
+  display: block;
 }
 
 @media (max-width: 768px) {
+  .main-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
   h2 {
     font-size: 1.3em;
+  }
+
+  .form-group input,
+  .form-group select,
+  .clone-section select {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  button[type="submit"],
+  button[type="button"] {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.2em;
+  }
+
+  .command,
+  .parameter {
+    width: 100%;
+  }
+
+  button[type="submit"],
+  button[type="button"] {
+    width: 100%;
+    margin: 10px 0;
   }
 }
