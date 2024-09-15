@@ -9,6 +9,10 @@ import { TagModule } from 'primeng/tag';
 import { MonitoringRequest } from '../../models/monitoring-request';
 import { MonitoringStatus } from '../../models/monitoring-status.enum';
 
+interface MonitoringRequestExtended extends MonitoringRequest {
+  invalidDescription?: boolean;
+}
+
 @Component({
   selector: 'app-preview-monitoring',
   standalone: true,
@@ -17,7 +21,7 @@ import { MonitoringStatus } from '../../models/monitoring-status.enum';
   styleUrls: ['./preview-monitoring.component.css'],
 })
 export class PreviewMonitoringComponent implements OnInit {
-  selectedDevices: MonitoringRequest[] = [];
+  selectedDevices: MonitoringRequestExtended[] = [];
   dropdownOptions = [
     { label: 'ON', value: MonitoringStatus.ON },
     { label: 'OFF', value: MonitoringStatus.OFF },
@@ -36,10 +40,11 @@ export class PreviewMonitoringComponent implements OnInit {
       navigation.extras.state['selectedDevices']
     ) {
       this.selectedDevices = navigation.extras.state['selectedDevices'].map(
-        (device: any) => ({
+        (device: MonitoringRequest) => ({
           deviceCode: device.deviceCode,
           monitoringStatus: MonitoringStatus.STANDBY,
           description: '',
+          invalidDescription: false,
         })
       );
     }
@@ -48,6 +53,22 @@ export class PreviewMonitoringComponent implements OnInit {
   ngOnInit(): void {}
 
   confirmMonitoring(): void {
+    let isValid = true;
+
+    this.selectedDevices.forEach((device) => {
+      if (!device.description || device.description.trim() === '') {
+        device.invalidDescription = true;
+        isValid = false;
+      } else {
+        device.invalidDescription = false;
+      }
+    });
+
+    if (!isValid) {
+      this.errorMessage = 'Please fill out all description fields.';
+      return;
+    }
+
     this.monitoringService
       .createMonitoring(this.selectedDevices as MonitoringRequest[])
       .subscribe({

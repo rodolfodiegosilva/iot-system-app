@@ -16,7 +16,7 @@
             <p-dropdown
               [options]="dropdownOptions"
               [(ngModel)]="device.monitoringStatus"
-              placeholder="Set MonitoringStatus"
+              placeholder="Set Monitoring Status"
               [showClear]="true"
               class="custom-dropdown"
             ></p-dropdown>
@@ -25,6 +25,7 @@
             <input
               type="text"
               [(ngModel)]="device.description"
+              [ngClass]="{ 'invalid-field': device.invalidDescription }"
               placeholder="Enter description"
               class="input-description"
             />
@@ -33,7 +34,9 @@
       </ng-template>
     </p-table>
     <div class="button-container">
-      <button (click)="confirmMonitoring()" class="btn btn-confirm">Confirm</button>
+      <button (click)="confirmMonitoring()" class="btn btn-confirm">
+        Confirm
+      </button>
       <button (click)="cancel()" class="btn btn-cancel">Cancel</button>
     </div>
     <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
