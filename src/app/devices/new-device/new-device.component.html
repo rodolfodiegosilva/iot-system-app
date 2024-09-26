@@ -30,10 +30,10 @@
         />
         <div
           *ngIf="f['deviceName'].touched && f['deviceName'].invalid"
-          class="error"
+          class="error small-error"
         >
           <div *ngIf="f['deviceName'].errors?.['required']">
-            Name is required.
+            <i class="pi pi-exclamation-circle"></i> Name is required.
           </div>
         </div>
       </div>
@@ -286,7 +286,9 @@
   <div *ngIf="step === 3">
     <h3>Review Device</h3>
     <div class="form-group">
-      <label for="userMultiSelect">Select Users for your new Device (optinal)</label>
+      <label for="userMultiSelect"
+        >Select Users for your new Device (optinal)</label
+      >
       <p-multiSelect
         id="userMultiSelect"
         [options]="filteredUsers"
@@ -298,7 +300,7 @@
         optionLabel="username"
       >
         <ng-template let-user pTemplate="item">
-          {{ user.username }} | {{ user.email }} 
+          {{ user.username }} | {{ user.email }}
         </ng-template>
       </p-multiSelect>
     </div>

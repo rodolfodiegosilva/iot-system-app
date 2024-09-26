@@ -97,6 +97,7 @@ export class NewDeviceComponent implements OnInit {
         this.filteredUsers = users.map((user) => ({
           username: user.username,
           email: user.email,
+          active: true
         }));
       },
       error: (error) => {

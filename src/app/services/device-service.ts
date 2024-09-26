@@ -96,4 +96,8 @@ export class DeviceService {
   getAllDevices(): Observable<Device[]> {
     return this.http.get<Device[]>(`${this.baseUrl}`);
   }
+
+  updateDevice(deviceCode: string, device: DeviceRequest): Observable<Device> {
+    return this.http.put<Device>(`${this.baseUrl}/${deviceCode}`, device);
+  }
 }
