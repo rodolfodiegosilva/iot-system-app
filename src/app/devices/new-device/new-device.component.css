@@ -82,14 +82,12 @@ button[type="button"]:disabled {
   text-align: center;
 }
 
+/* Mensagem de erro */
 .error {
-  color: #a94442;
-  background-color: #f2dede;
-  border: 1px solid #ebccd1;
-  padding: 15px;
-  margin-top: 20px;
-  border-radius: 5px;
+  color: red;
+  font-weight: bold;
   text-align: center;
+  margin-top: 10px;
 }
 
 .command-group,

@@ -3,78 +3,381 @@
 <div *ngIf="device; else noDevice">
   <div class="device-container">
     <div class="top-row">
-      <p-card class="device-section">
-        <h2 class="section-title">Device Information</h2>
-        <div class="p-grid">
-          <div class="p-col-12">
-            <strong>Name:</strong> {{ device.deviceName }}
-          </div>
-          <div class="p-col-12">
-            <strong>Description:</strong> {{ device.description }}
-          </div>
-          <div class="p-col-12">
-            <strong>Device Code:</strong> {{ device.deviceCode }}
-          </div>
-          <div class="p-col-12">
-            <strong>Status:</strong> {{ device.deviceStatus }}
-          </div>
-          <div class="p-col-12">
-            <strong>Industry Type:</strong> {{ device.industryType }}
-          </div>
-          <div class="p-col-12">
-            <strong>Manufacturer:</strong> {{ device.manufacturer }}
-          </div>
-          <div class="p-col-12">
-            <strong>URL:</strong> <a [href]="device.url">{{ device.url }}</a>
-          </div>
-        </div>
-      </p-card>
-
-      <p-card class="device-section owner-info">
-        <h2 class="section-title">Owners Information</h2>
-        <p>
-          <strong>Created By:</strong> {{ device.createdBy.name }} |
-          {{ device.createdBy.email }}
-        </p>
-        <h3 class="assigned-owners">Assigned Owners</h3>
-        <div class="related-users-grid" *ngIf="device.users.length > 0">
-          <div *ngFor="let user of device.users" class="user-entry-grid">
-            {{ user.email }} | {{ user.name }}
-          </div>
-        </div>
-      </p-card>
+      <button
+        *ngIf="!editMode"
+        pButton
+        label="Edit Device"
+        icon="pi pi-pencil"
+        class="edit-button"
+        (click)="toggleEditMode()"
+      ></button>
     </div>
-    <div class="bottom-row">
-      <p-panel header="Commands" class="commands-section">
-        <p-accordion>
-          <p-accordionTab
-            *ngFor="let command of device.commands"
-            [header]="command.operation"
-          >
-            <div class="command-details-container">
-              <div class="command-block">
-                <h3>Description</h3>
-                <p><strong>Operation:</strong> {{ command.operation }}</p>
-                <p><strong>Description:</strong> {{ command.description }}</p>
-                <p><strong>Result:</strong> {{ command.result }}</p>
-                <p><strong>Format:</strong> {{ command.format }}</p>
+
+    <div *ngIf="editMode; else viewMode" class="device-container">
+      <div class="row-container">
+        <div class="device-section edit-info">
+          <h2 class="section-title">Edit Device Information</h2>
+          <form [formGroup]="deviceForm">
+            <div class="p-grid">
+              <div class="p-col-12">
+                <label>Device Code:</label>
+                <input
+                  [value]="device.deviceCode"
+                  disabled
+                  class="form-control"
+                />
               </div>
-              <div class="command-block">
-                <h3 class="assigned-owners">Command Details</h3>
-                <p><strong>Command:</strong> {{ command.command.command }}</p>
-                <div *ngFor="let parameter of command.command.parameters">
-                  <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
-                  <p>
-                    <strong>Parameter Description:</strong>
-                    {{ parameter.description }}
-                  </p>
+              <div class="p-col-12">
+                <label>Name:</label>
+                <input formControlName="deviceName" class="form-control" />
+                <div
+                  *ngIf="f['deviceName'].touched && f['deviceName'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['deviceName'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> Name is required.
+                  </div>
+                </div>
+              </div>
+              <div class="p-col-12">
+                <label>Description:</label>
+                <textarea
+                  formControlName="description"
+                  rows="3"
+                  class="form-control"
+                ></textarea>
+                <div
+                  *ngIf="f['description'].touched && f['description'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['description'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> Description is
+                    required.
+                  </div>
+                </div>
+              </div>
+              <div class="p-col-12">
+                <label>Status:</label>
+                <input formControlName="deviceStatus" class="form-control" />
+                <div
+                  *ngIf="f['deviceStatus'].touched && f['deviceStatus'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['deviceStatus'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> Status is required.
+                  </div>
+                </div>
+              </div>
+              <div class="p-col-12">
+                <label>Industry Type:</label>
+                <p-dropdown
+                  formControlName="industryType"
+                  [options]="industryTypes"
+                  [style]="{ width: '100%' }"
+                ></p-dropdown>
+                <div
+                  *ngIf="f['industryType'].touched && f['industryType'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['industryType'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> Industry Type is
+                    required.
+                  </div>
+                </div>
+              </div>
+              <div class="p-col-12">
+                <label>Manufacturer:</label>
+                <input formControlName="manufacturer" class="form-control" />
+                <div
+                  *ngIf="f['manufacturer'].touched && f['manufacturer'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['manufacturer'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> Manufacturer is
+                    required.
+                  </div>
+                </div>
+              </div>
+              <div class="p-col-12">
+                <label>URL:</label>
+                <input formControlName="url" class="form-control" />
+                <div
+                  *ngIf="f['url'].touched && f['url'].invalid"
+                  class="error small-error"
+                >
+                  <div *ngIf="f['url'].errors?.['required']">
+                    <i class="pi pi-exclamation-circle"></i> URL is required.
+                  </div>
+                  <div *ngIf="f['url'].errors?.['pattern']">
+                    <i class="pi pi-exclamation-circle"></i> URL must follow the
+                    format: https://example.com
+                  </div>
                 </div>
               </div>
             </div>
+          </form>
+        </div>
+
+        <div class="owner-info">
+          <h2 class="section-title">Owners Information</h2>
+          <p>
+            <strong>Created By:</strong> {{ device.createdBy.name }} |
+            {{ device.createdBy.email }}
+          </p>
+
+          <div class="custom-select-container">
+            <div class="selected-label" (click)="toggleDropdown()">
+              <span *ngIf="selectedUsers.length === 0"
+                >Search and select users</span
+              >
+              <span *ngIf="selectedUsers.length > 0"
+                >Search and select users</span
+              >
+            </div>
+            <div class="dropdown" *ngIf="dropdownOpen">
+              <input
+                type="text"
+                [(ngModel)]="filterText"
+                (input)="searchUsers()"
+                placeholder="Type to search..."
+                class="filter-input"
+              />
+              <ul>
+                <li
+                  *ngFor="let user of filteredUsers"
+                  (click)="selectUser(user)"
+                >
+                  {{ user.username }} | {{ user.email }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="assigned-owners">Assigned Owners</h3>
+          <div class="related-users-grid" *ngIf="selectedUsers.length > 0">
+            <div class="user-entry-grid">
+              <div *ngFor="let user of selectedUsers" class="user-box">
+                {{ user.email }}
+                <button class="remove-user-btn" (click)="removeUser(user)">
+                  X
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="command-info">
+        <h2 class="section-title">Edit Device Commands</h2>
+        <p-accordion>
+          <p-accordionTab
+            *ngFor="let command of device.commands; let i = index"
+            [header]="'Command ' + (i + 1)"
+          >
+            <div class="command-grid">
+              <div class="p-col-6">
+                <label>Operation:</label>
+                <input
+                  [(ngModel)]="command.operation"
+                  class="form-control"
+                  required
+                />
+                <div *ngIf="!command.operation" class="error small-error">
+                  <i class="pi pi-exclamation-circle"></i> Operation is
+                  required.
+                </div>
+              </div>
+              <div class="p-col-6">
+                <label>Description:</label>
+                <textarea
+                  [(ngModel)]="command.description"
+                  rows="3"
+                  class="form-control"
+                  required
+                ></textarea>
+                <div *ngIf="!command.description" class="error small-error">
+                  <i class="pi pi-exclamation-circle"></i> Description is
+                  required.
+                </div>
+              </div>
+              <div class="p-col-6">
+                <label>Result:</label>
+                <input
+                  [(ngModel)]="command.result"
+                  class="form-control"
+                  required
+                />
+                <div *ngIf="!command.result" class="error small-error">
+                  <i class="pi pi-exclamation-circle"></i> Result is required.
+                </div>
+              </div>
+              <div class="p-col-6">
+                <label>Format:</label>
+                <input
+                  [(ngModel)]="command.format"
+                  class="form-control"
+                  required
+                />
+                <div *ngIf="!command.format" class="error small-error">
+                  <i class="pi pi-exclamation-circle"></i> Format is required.
+                </div>
+              </div>
+            </div>
+            <div class="parameter-grid">
+              <div
+                *ngFor="let param of command.command.parameters; let j = index"
+                class="parameter-item"
+              >
+                <button
+                  type="button"
+                  class="btn-remove-parameter"
+                  (click)="removeParameter(i, j)"
+                >
+                  X
+                </button>
+                <h4>Parameter {{ j + 1 }}</h4>
+                <div class="p-col-6">
+                  <label>Parameter Name:</label>
+                  <input
+                    [(ngModel)]="param.name"
+                    class="form-control"
+                    required
+                  />
+                  <div *ngIf="!param.name" class="error small-error">
+                    <i class="pi pi-exclamation-circle"></i> Parameter Name is
+                    required.
+                  </div>
+                </div>
+                <div class="p-col-6">
+                  <label>Parameter Description:</label>
+                  <textarea
+                    [(ngModel)]="param.description"
+                    rows="2"
+                    class="form-control"
+                    required
+                  ></textarea>
+                  <div *ngIf="!param.description" class="error small-error">
+                    <i class="pi pi-exclamation-circle"></i> Parameter
+                    Description is required.
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn-add-parameter"
+                (click)="addParameter(i)"
+              >
+                Add New Parameter
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn-remove-command"
+              (click)="removeCommand(i)"
+            >
+              Remove Command
+            </button>
           </p-accordionTab>
         </p-accordion>
-      </p-panel>
+        <button type="button" class="btn-add-command" (click)="addCommand()">
+          Add New Command
+        </button>
+      </div>
+
+      <div class="edition-form-actions">
+        <button
+          pButton
+          type="button"
+          label="Save Changes"
+          class="btn-save"
+          (click)="updateDevice()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Cancel"
+          class="btn-cancel"
+          (click)="toggleEditMode()"
+        ></button>
+      </div>
     </div>
+
+    <ng-template #viewMode>
+      <div class="top-row">
+        <p-card class="device-section">
+          <h2 class="section-title">Device Information</h2>
+          <div class="p-grid">
+            <div class="p-col-12">
+              <strong>Name:</strong> {{ device.deviceName }}
+            </div>
+            <div class="p-col-12">
+              <strong>Description:</strong> {{ device.description }}
+            </div>
+            <div class="p-col-12">
+              <strong>Device Code:</strong> {{ device.deviceCode }}
+            </div>
+            <div class="p-col-12">
+              <strong>Status:</strong> {{ device.deviceStatus }}
+            </div>
+            <div class="p-col-12">
+              <strong>Industry Type:</strong> {{ device.industryType }}
+            </div>
+            <div class="p-col-12">
+              <strong>Manufacturer:</strong> {{ device.manufacturer }}
+            </div>
+            <div class="p-col-12">
+              <strong>URL:</strong> <a [href]="device.url">{{ device.url }}</a>
+            </div>
+          </div>
+        </p-card>
+
+        <p-card class="device-section owner-info">
+          <h2 class="section-title">Owners Information</h2>
+          <p>
+            <strong>Created By:</strong> {{ device.createdBy.name }} |
+            {{ device.createdBy.email }}
+          </p>
+          <h3 class="assigned-owners">Assigned Owners</h3>
+          <div class="related-users-grid" *ngIf="selectedUsers.length > 0">
+            <div *ngFor="let user of selectedUsers" class="user-entry-grid">
+              {{ user.email }} | {{ user.username }}
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="bottom-row">
+        <p-panel header="Commands" class="commands-section">
+          <p-accordion>
+            <p-accordionTab
+              *ngFor="let command of device.commands"
+              [header]="command.operation"
+            >
+              <div class="command-details-container">
+                <div class="command-block">
+                  <h3>Description</h3>
+                  <p><strong>Operation:</strong> {{ command.operation }}</p>
+                  <p><strong>Description:</strong> {{ command.description }}</p>
+                  <p><strong>Result:</strong> {{ command.result }}</p>
+                  <p><strong>Format:</strong> {{ command.format }}</p>
+                </div>
+                <div class="command-block">
+                  <h3 class="assigned-owners">Command Details</h3>
+                  <p><strong>Command:</strong> {{ command.command.command }}</p>
+                  <div *ngFor="let parameter of command.command.parameters">
+                    <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
+                    <p>
+                      <strong>Parameter Description:</strong>
+                      {{ parameter.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </p-panel>
+      </div>
+    </ng-template>
   </div>
 </div>
 
@@ -82,7 +385,4 @@
   <div class="error">{{ errorMessage }}</div>
 </ng-template>
 
-<app-device-monitoring
-  *ngIf="device"
-  [device]="device"
-></app-device-monitoring>
+<app-device-monitoring *ngIf="device" [device]="device"></app-device-monitoring>

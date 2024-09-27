@@ -42,7 +42,7 @@ export class PreviewMonitoringComponent implements OnInit {
       this.selectedDevices = navigation.extras.state['selectedDevices'].map(
         (device: MonitoringRequest) => ({
           deviceCode: device.deviceCode,
-          monitoringStatus: MonitoringStatus.STANDBY,
+          monitoringStatus: MonitoringStatus.ON,
           description: '',
           invalidDescription: false,
         })

@@ -15,4 +15,5 @@ export interface User {
 export interface SimpleUser {
   username: string;
   email: string;
+  active: boolean;
 }

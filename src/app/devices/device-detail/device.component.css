@@ -1,12 +1,36 @@
+/* Container principal para o dispositivo */
 .device-container {
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 95%;
+  margin: 5px 5px;
+  padding: 5px 5px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  background-color: #f4f6f9;
 }
 
+/* Estrutura das seções lado a lado: Edit Device e Owners */
+.row-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  /* Ensures proper behavior for smaller screens */
+  flex-wrap: wrap;
+}
+
+/* Largura da seção de Edição de Dispositivo (60%) */
+.edit-info {
+  flex: 0 0 60%;
+  /* Adjust padding for smaller devices */
+  padding: 10px;
+}
+
+/* Largura da seção de Informação de Donos (40%) */
+.owner-info {
+  flex: 0 0 40%;
+  padding: 10px;
+}
+
+/* Alinhamento das seções no modo de edição e visualização */
 .top-row {
   display: flex;
   justify-content: space-between;
@@ -18,105 +42,178 @@
   font-size: 24px;
   margin-top: 5px;
   font-weight: bold;
+  color: #333;
 }
 
-.device-section, .owner-info {
+.assigned-owners {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Seções de informações e donos */
+.device-section,
+.owner-info {
   flex: 1;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.device-section .p-card-header, .owner-info .p-card-header {
+.device-section .p-card-header,
+.owner-info .p-card-header {
   text-align: center;
   font-weight: bold;
+  font-size: 18px;
+  color: #555;
 }
 
 .owner-info p {
   font-size: 14px;
   margin-bottom: 10px;
+  color: #777;
 }
 
-h3 {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 15px;
+/* Estilo para o formulário de edição */
+.device-section .p-grid {
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.device-section .p-grid label {
+  font-size: 14px;
   font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  color: #555;
 }
 
+.device-section .p-grid input,
+.device-section .p-grid textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.device-section .p-grid input:focus,
+.device-section .p-grid textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.device-section .p-grid textarea {
+  resize: vertical;
+  height: 80px;
+}
+
+/* Grid para exibir usuários adicionados */
 .related-users-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.user-entry-grid {
-  flex: 1 1 30%;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: center;
-  word-break: break-word;
-}
-
+/* Estilo para links */
 .p-col-12 a {
   word-break: break-all;
   display: inline-block;
   width: 100%;
   overflow-wrap: break-word;
   white-space: normal;
+  color: #007bff;
+  text-decoration: none;
 }
 
+.p-col-12 a:hover {
+  text-decoration: underline;
+}
+
+/* Mensagem de erro */
 .error {
   color: red;
   font-weight: bold;
   text-align: center;
+  margin-top: 10px;
 }
 
-.command-details-container {
+.custom-multiSelect {
+  width: 100%; /* Adjust to 100% width for better responsiveness */
+  display: inline-block;
+}
+
+/* Button responsiveness */
+.edition-form-actions {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: flex-start;
-  width: 100%;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.command-block {
-  flex: 1;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  word-wrap: break-word;
+.btn-save,
+.btn-cancel {
+  padding: 10px 15px;
+  min-width: 140px;
 }
 
-.command-block h3 {
-  text-align: left;
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: bold;
+.btn-save:hover,
+.btn-cancel:hover {
+  opacity: 0.9;
+}
+
+/* Responsive Styles for different screen sizes */
+@media (max-width: 1200px) {
+  .row-container {
+    gap: 15px;
+  }
+
+  .edit-info {
+    flex: 0 0 65%;
+  }
+
+  .owner-info {
+    flex: 0 0 35%;
+  }
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 992px) {
+  .row-container {
+    flex-direction: column;
+  }
+
+  .edit-info,
+  .owner-info {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .edition-form-actions {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    flex: 1;
+    max-width: 180px;
+  }
 }
 
 @media (max-width: 768px) {
-  .top-row {
-    flex-direction: column;
-  }
-
-  .command-details-container {
-    flex-direction: column;
-  }
-
-  .user-entry-grid {
-    flex: 1 1 100%;
-  }
-
   .device-container {
-    padding: 10px;
+    padding: 0px;
   }
 
-  .device-section, .owner-info {
+  .device-section,
+  .owner-info {
     padding: 10px;
   }
 
@@ -128,18 +225,233 @@ h3 {
   .command-block h3 {
     font-size: 16px;
   }
+
+  .related-users-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .user-box {
+    padding: 5px;
+    min-width: 80px;
+    max-width: 50%;
+    margin-bottom: 2px;
+  }
+  .assigned-owners {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 480px) {
-  .user-entry-grid {
-    flex: 1 1 100%;
+  .top-row {
+    display: flex;
+    flex-direction: column;
   }
-
   .section-title {
     font-size: 18px;
   }
-
+  .top-row p-card {
+    padding: 0%;
+  }
   .command-block h3 {
     font-size: 16px;
   }
+
+  .edition-form-actions {
+    gap: 10px;
+  }
 }
+
+/* User Box Responsiveness */
+.user-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  min-width: 180px;
+  max-width: 100%; /* Make sure it does not overflow */
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f0f8ff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  margin-bottom: 5px;
+}
+
+.user-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.remove-user-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.remove-user-btn:hover {
+  background-color: #ff7875;
+}
+.user-select {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-entry-grid {
+  flex: 1 1 30%;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  word-break: break-word;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: space-evenly;
+}
+
+
+.command-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dividindo a seção em duas colunas */
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.parameter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Exibe 2 parâmetros por linha */
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.parameter-item {
+  position: relative; /* Para posicionar o botão "X" */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 5px;
+}
+
+.btn-remove-parameter {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.btn-remove-command,
+.btn-add-parameter,
+.btn-add-command {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn-remove-command {
+  background-color: #ff4d4f;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+
+
+
+
+.custom-select-container {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+}
+
+.selected-label {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dropdown {
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.dropdown ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown ul li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown ul li:hover {
+  background-color: #eaeaea;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.user-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.remove-user-btn {
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+
