@@ -4,7 +4,7 @@
   <div class="device-container">
     <div class="top-row">
       <button
-        *ngIf="!editMode"
+      *ngIf="canEdit && !editMode"
         pButton
         label="Edit Device"
         icon="pi pi-pencil"

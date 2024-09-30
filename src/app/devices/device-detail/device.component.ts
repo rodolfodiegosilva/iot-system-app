@@ -22,6 +22,7 @@ import { SimpleUser } from '../../models/user.model';
 import { UserService } from '../../services/user-service';
 import { Parameter } from '../../models/parameter.model';
 import { CommandDescription } from '../../models/command-description.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-device',
@@ -53,13 +54,15 @@ export class DeviceComponent implements OnInit {
   selectedUsers: SimpleUser[] = [];
   filterText: string = '';
   dropdownOpen = false;
+  loggedUser: any;
+  canEdit: any;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private deviceService: DeviceService,
     private userService: UserService,
-    private router: Router
+    private authService: AuthService
   ) {
     this.deviceForm = this.fb.group({
       deviceName: ['', Validators.required],
@@ -72,6 +75,15 @@ export class DeviceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.fetchUserData().subscribe({
+      next: (data: any) => {
+        this.loggedUser = data;
+      },
+      error: () => {
+        this.errorMessage = 'User not found';
+      },
+    });
+
     const deviceCode = this.route.snapshot.paramMap.get('deviceCode');
     if (deviceCode) {
       this.deviceService.getDeviceByCode(deviceCode).subscribe({
@@ -84,7 +96,7 @@ export class DeviceComponent implements OnInit {
               email: user.email,
               active: user.enabled,
             }));
-
+          this.isUserDeviceOwner();
           this.populateForm(data);
           this.setBreadcrumbItems();
           this.searchUsers();
@@ -97,6 +109,13 @@ export class DeviceComponent implements OnInit {
     this.deviceService.getIndustryTypes().subscribe((types) => {
       this.industryTypes = types.map((type) => ({ label: type, value: type }));
     });
+  }
+
+  isUserDeviceOwner() {
+    this.canEdit =
+      this.device &&
+      this.loggedUser &&
+      this.device.createdBy.email === this.loggedUser.email;
   }
 
   searchUsers() {
