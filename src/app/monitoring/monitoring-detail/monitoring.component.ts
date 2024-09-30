@@ -11,18 +11,14 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './monitoring.component.html',
   styleUrls: ['./monitoring.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    BreadcrumbModule
-  ]
+  imports: [CommonModule, FormsModule, BreadcrumbModule],
 })
 export class MonitoringComponent implements OnInit, OnChanges {
   monitoring: any;
   errorMessage: string | undefined;
   breadcrumbItems: MenuItem[];
-  loadingCommand: boolean = false;
-  commandResponse: string | null = null;
+  commandStates: { [key: string]: boolean } = {};
+  commandResponse: { [key: string]: string | null } = {};
   filteredCommands: any[] = [];
 
   constructor(
@@ -63,28 +59,37 @@ export class MonitoringComponent implements OnInit, OnChanges {
 
     this.breadcrumbItems = [
       { label: 'Monitorings', routerLink: ['/monitorings'] },
-      { label: 'Monitoring Detail', disabled: true }
+      { label: 'Monitoring Detail', disabled: true },
     ];
   }
 
   setBreadcrumbItems(): void {
     this.breadcrumbItems = [
       { label: 'Monitorings', routerLink: ['/monitorings'] },
-      { label: this.monitoring?.monitoringCode || 'Monitoring Detail', disabled: true }
+      {
+        label: this.monitoring?.monitoringCode || 'Monitoring Detail',
+        disabled: true,
+      },
     ];
   }
 
   filterCommands(): void {
-    if (this.monitoring && this.monitoring.device && this.monitoring.device.commands) {
-      this.filteredCommands = this.monitoring.device.commands.filter((command: any) => {
-        if (this.monitoring.device.deviceStatus === 'ON') {
-          return command.operation !== 'Activate';
-        } else if (this.monitoring.device.deviceStatus === 'OFF') {
-          return command.operation !== 'Deactivate';
-        } else {
-          return true;
+    if (
+      this.monitoring &&
+      this.monitoring.device &&
+      this.monitoring.device.commands
+    ) {
+      this.filteredCommands = this.monitoring.device.commands.filter(
+        (command: any) => {
+          if (this.monitoring.device.deviceStatus === 'ON') {
+            return command.operation !== 'Activate';
+          } else if (this.monitoring.device.deviceStatus === 'OFF') {
+            return command.operation !== 'Deactivate';
+          } else {
+            return true;
+          }
         }
-      });
+      );
     }
   }
 
@@ -94,19 +99,21 @@ export class MonitoringComponent implements OnInit, OnChanges {
 
   sendCommand(command: any): void {
     const deviceUrl = this.monitoring.device.url;
-    this.loadingCommand = true;
-    this.commandResponse = null;
+    const commandKey = command.operation;
+    this.commandStates[commandKey] = true;
+    this.commandResponse[commandKey] = null;
+
     this.monitoringService.sendDeviceCommand(deviceUrl, command).subscribe({
       next: (response) => {
         console.log('Command sent successfully:', response);
-        this.loadingCommand = false;
-        this.commandResponse = 'Command sent successfully';
-        this.loadMonitoringData(); // Reload monitoring data after command is sent
+        this.commandStates[commandKey] = false;
+        this.commandResponse[commandKey] = 'Command sent successfully';
+        this.loadMonitoringData();
       },
       error: (error) => {
         console.error('Error sending command:', error);
-        this.loadingCommand = false;
-        this.commandResponse = 'Error sending command';
+        this.commandStates[commandKey] = false;
+        this.commandResponse[commandKey] = 'Error sending command';
       },
     });
   }

@@ -1,7 +1,7 @@
 .monitoring-container {
   margin: 20px auto;
   padding: 20px;
-  max-width: 1200px;
+  width: 90%;
   background-color: #f0f4f7;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -18,7 +18,7 @@
 }
 
 .monitoring-section {
-  flex: 1 1 45%;
+  flex: 1 1 30%;
   margin: 10px;
   padding: 20px;
   background-color: #ffffff;
@@ -26,26 +26,31 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.panel {
+/* Flexbox para os comandos */
+.commands-container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
   margin-top: 20px;
 }
 
-.panel-section {
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .command-section {
-  margin-bottom: 10px;
+  flex: 1 1 calc(33.3333% - 20px); /* Máximo de 3 por linha */
   padding: 10px;
   border-radius: 4px;
   background-color: #f9f9f9;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustando responsividade */
+@media (max-width: 768px) {
+  .commands-container {
+    flex-direction: column;
+  }
+
+  .command-section {
+    flex: 1 1 100%; /* Em telas pequenas, cada comando ocupa 100% da largura */
+  }
 }
 
 .monitoring-container h2, .monitoring-container h3 {
@@ -65,12 +70,12 @@
 }
 
 .status-on {
-  color: #28a745; /* Green for ON status */
+  color: #28a745;
   font-weight: bold;
 }
 
 .status-off {
-  color: #dc3545; /* Red for OFF status */
+  color: #dc3545;
   font-weight: bold;
 }
 
@@ -88,17 +93,17 @@
 }
 
 .send-command-button.sending {
-  background-color: #ffc107; /* Yellow for sending state */
+  background-color: #ffc107;
   color: #333;
   cursor: not-allowed;
 }
 
 .send-command-button.success {
-  background-color: #28a745; /* Green for success state */
+  background-color: #28a745;
 }
 
 .send-command-button.error {
-  background-color: #dc3545; /* Red for error state */
+  background-color: #dc3545;
 }
 
 .view-device-button:hover,
@@ -127,49 +132,6 @@
   100% { width: 100%; }
 }
 
-.loading {
-  margin-top: 20px;
-  text-align: center;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.loading .spinner {
-  border: 4px solid #f3f3f3; /* Light grey */
-  border-top: 4px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 2s linear infinite;
-  margin: 0 auto;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.response-message {
-  margin-top: 20px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.response-message.success-message {
-  color: #28a745; /* Green for success */
-}
-
-.response-message.error-message {
-  color: #dc3545; /* Red for error */
-}
-
-.error {
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 20px;
-}
-
 @media (max-width: 768px) {
   .header-section {
     flex-direction: column;
@@ -178,9 +140,5 @@
   .monitoring-section {
     flex: 1 1 100%;
     margin: 10px 0;
-  }
-
-  .panel {
-    flex-direction: column;
   }
 }

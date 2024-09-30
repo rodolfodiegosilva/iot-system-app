@@ -2,13 +2,27 @@
 
 <div *ngIf="monitoring" class="monitoring-container">
   <div class="header-section">
+    <!-- Informações de monitoramento, usuário e dispositivo -->
     <div class="monitoring-section">
       <h2>Monitoring Information</h2>
       <p><strong>Code:</strong> {{ monitoring.monitoringCode }}</p>
       <p><strong>Description:</strong> {{ monitoring.description }}</p>
-      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.monitoringStatus === 'ON', 'status-off': monitoring.monitoringStatus === 'OFF'}">{{ monitoring.monitoringStatus }}</span></p>
-      <p><strong>Created At:</strong> {{ monitoring.createdAt | date: 'short' }}</p>
-      <p><strong>Updated At:</strong> {{ monitoring.updatedAt | date: 'short' }}</p>
+      <p>
+        <strong>Status:</strong>
+        <span
+          [ngClass]="{
+            'status-on': monitoring.monitoringStatus === 'ON',
+            'status-off': monitoring.monitoringStatus === 'OFF'
+          }"
+          >{{ monitoring.monitoringStatus }}</span
+        >
+      </p>
+      <p>
+        <strong>Created At:</strong> {{ monitoring.createdAt | date : "short" }}
+      </p>
+      <p>
+        <strong>Updated At:</strong> {{ monitoring.updatedAt | date : "short" }}
+      </p>
     </div>
     <div class="monitoring-section">
       <h2>User Information</h2>
@@ -17,41 +31,86 @@
       <p><strong>Username:</strong> {{ monitoring.user.username }}</p>
       <p><strong>Role:</strong> {{ monitoring.user.role }}</p>
     </div>
-  </div>
-  <div class="panel">
-    <div class="panel-section">
-      <h3>Device Information</h3>
+    <div class="monitoring-section">
+      <h2>Device Information</h2>
       <p><strong>Name:</strong> {{ monitoring.device.deviceName }}</p>
       <p><strong>Description:</strong> {{ monitoring.device.description }}</p>
-      <p><strong>Status:</strong> <span [ngClass]="{'status-on': monitoring.device.deviceStatus === 'ON', 'status-off': monitoring.device.deviceStatus === 'OFF'}">{{ monitoring.device.deviceStatus }}</span></p>
+      <p>
+        <strong>Status:</strong>
+        <span
+          [ngClass]="{
+            'status-on': monitoring.device.deviceStatus === 'ON',
+            'status-off': monitoring.device.deviceStatus === 'OFF'
+          }"
+          >{{ monitoring.device.deviceStatus }}</span
+        >
+      </p>
       <p><strong>Device Code:</strong> {{ monitoring.device.deviceCode }}</p>
       <p><strong>Manufacturer:</strong> {{ monitoring.device.manufacturer }}</p>
-      <p><strong>Created At:</strong> {{ monitoring.device.createdAt | date: 'short' }}</p>
-      <button (click)="viewDevice(monitoring.device.deviceCode)" class="view-device-button">
+      <p>
+        <strong>Created At:</strong>
+        {{ monitoring.device.createdAt | date : "short" }}
+      </p>
+      <button
+        (click)="viewDevice(monitoring.device.deviceCode)"
+        class="view-device-button"
+      >
         <i class="fas fa-eye"></i> View Device
       </button>
     </div>
-    <div class="panel-section" *ngIf="filteredCommands.length">
-      <h3>Device Commands</h3>
+  </div>
+
+  <div class="panel-section" *ngIf="filteredCommands.length">
+    <h3>Device Commands</h3>
+    <div class="commands-container">
       <div *ngFor="let command of filteredCommands" class="command-section">
         <p><strong>Operation:</strong> {{ command.operation }}</p>
         <p><strong>Description:</strong> {{ command.description }}</p>
-        <button 
-          (click)="sendCommand(command)" 
-          [ngClass]="{'sending': loadingCommand, 'success': commandResponse === 'Command sent successfully', 'error': commandResponse === 'Error sending command'}"
-          class="send-command-button">
-          <i [class.fa-spinner]="loadingCommand" class="fas" [class.fa-cog]="!loadingCommand"></i> {{ loadingCommand ? 'Sending...' : 'Send Command' }}
+        <button
+          (click)="sendCommand(command)"
+          [ngClass]="{
+            sending: commandStates[command.operation],
+            success:
+              commandResponse[command.operation] ===
+              'Command sent successfully',
+            error:
+              commandResponse[command.operation] === 'Error sending command'
+          }"
+          class="send-command-button"
+        >
+          <i
+            [class.fa-spinner]="commandStates[command.operation]"
+            class="fas"
+            [class.fa-cog]="!commandStates[command.operation]"
+          ></i>
+          {{ commandStates[command.operation] ? "Sending..." : "Send Command" }}
         </button>
-        <div *ngIf="loadingCommand" class="progress-bar">
+        <div *ngIf="commandStates[command.operation]" class="progress-bar">
           <div class="progress"></div>
+        </div>
+        <div
+          *ngIf="
+            commandResponse &&
+            commandResponse[command.operation] === 'Command sent successfully'
+          "
+          class="success-message"
+        >
+          Command sent successfully!
+        </div>
+        <div
+          *ngIf="
+            commandResponse &&
+            commandResponse[command.operation] === 'Error sending command'
+          "
+          class="error-message"
+        >
+          Error sending command.
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="commandResponse" class="response-message" [ngClass]="{'success-message': commandResponse === 'Command sent successfully', 'error-message': commandResponse === 'Error sending command'}">
-    <p>{{ commandResponse }}</p>
-  </div>
 </div>
+
 <div *ngIf="errorMessage" class="error">
   <p>{{ errorMessage }}</p>
 </div>
