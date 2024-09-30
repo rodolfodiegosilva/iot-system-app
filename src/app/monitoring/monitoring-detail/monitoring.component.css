@@ -133,8 +133,14 @@
 }
 
 @media (max-width: 768px) {
+  .monitoring-container{
+    width: 98%;
+    margin: 2px;
+    padding: 2px;
+  }
   .header-section {
     flex-direction: column;
+    padding: 2px;
   }
 
   .monitoring-section {
