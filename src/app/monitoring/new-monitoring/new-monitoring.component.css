@@ -1,72 +1,74 @@
 .main-container {
-    padding: 20px;
-  }
-  
-  .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .card {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .p-table {
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .p-columnFilter {
-    width: 100%;
-  }
-  
-  .p-dropdown {
-    width: 100%;
-  }
-  
-  .p-tag {
-    display: inline-block;
-    padding: 0.25em 0.5em;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
-  
-  .table-clickable-row {
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .table-clickable-row:hover {
-    background-color: #f1f1f1;
-  }
-  
+  padding: 20px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.p-table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.p-columnFilter {
+  width: 100%;
+}
+
+.p-dropdown {
+  width: 100%;
+}
+
+.p-tag {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.table-clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.table-clickable-row:hover {
+  background-color: #f1f1f1;
+}
+
+.add-new-button {
+  margin-left: auto;
+}
+
+.next-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.next-button-container .btn {
+  align-self: flex-end;
+}
+
+.disabled-row {
+  opacity: 0.5;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
   .add-new-button {
-    margin-left: auto;
+    margin-left: 0;
+    margin-top: 10px;
   }
-  
-  .next-button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+  .card {
+    padding: 5px !important;
   }
-  
-  .next-button-container .btn {
-    align-self: flex-end;
-  }
-  
-  /* Esconder colunas menos importantes em dispositivos móveis */
-  @media (max-width: 768px) {  
-    .add-new-button {
-      margin-left: 0;
-      margin-top: 10px;
-    }
-    .card{
-        padding: 5px !important;
-      }
-  }
-  
+}
