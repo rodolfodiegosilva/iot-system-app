@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { Table, TableModule } from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -12,6 +12,8 @@ import { Device } from '../../models/device.model';
 import { DeviceService } from '../../services/device-service';
 import { DevicePaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-new-monitoring',
@@ -36,10 +38,15 @@ export class NewMonitoringComponent implements OnInit, OnDestroy {
   filters: any = {};
   statuses: any[] = [];
   selectedStatus: string = '';
+  loggedUser: User | null = null;
   private searchSubject = new Subject<any>();
   private destroy$ = new Subject<void>();
 
-  constructor(private deviceService: DeviceService, private router: Router) {}
+  constructor(
+    private deviceService: DeviceService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.statuses = [
@@ -47,7 +54,16 @@ export class NewMonitoringComponent implements OnInit, OnDestroy {
       { label: 'ON', value: 'ON' },
       { label: 'STANDBY', value: 'STANDBY' },
     ];
-    this.loadDevices({ first: 0, rows: 10 });
+
+    this.authService.fetchUserData().subscribe({
+      next: (data: User) => {
+        this.loggedUser = data;
+        this.loadDevices({ first: 0, rows: 10 });
+      },
+      error: () => {
+        console.error('User not found');
+      },
+    });
 
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
@@ -75,7 +91,29 @@ export class NewMonitoringComponent implements OnInit, OnDestroy {
         this.devices = data.content;
         this.totalRecords = data.totalElements;
         this.loading = false;
+
+        if (this.loggedUser) {
+          const isAdmin = this.loggedUser.role === 'ADMIN';
+          this.devices.forEach((device) => {
+            if (isAdmin) {
+              device.canEdit = true;
+            } else {
+              device.isUserAssociated = this.isUserAssociatedWithDevice(
+                device,
+                this.loggedUser!
+              );
+              device.canEdit = device.isUserAssociated;
+            }
+          });
+        }
       });
+  }
+
+  isUserAssociatedWithDevice(device: Device, user: User): boolean {
+    return (
+      device.users.some((dUser) => dUser.id === user.id) ||
+      device.createdBy.id === user.id
+    );
   }
 
   clearFilters() {

@@ -59,6 +59,7 @@ export class DeviceComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private route: ActivatedRoute,
     private deviceService: DeviceService,
     private userService: UserService,
@@ -100,6 +101,15 @@ export class DeviceComponent implements OnInit {
           this.populateForm(data);
           this.setBreadcrumbItems();
           this.searchUsers();
+
+          this.deviceService.getMonitoringByDeviceCode(deviceCode).subscribe({
+            next: (monitoring) => {
+              this.device!.monitoring = monitoring;
+            },
+            error: () => {
+              console.warn('No monitoring found for this device');
+            },
+          });
         },
         error: () => {
           this.errorMessage = 'Device not found';
@@ -271,6 +281,19 @@ export class DeviceComponent implements OnInit {
   removeCommand(commandIndex: number): void {
     if (this.device?.commands) {
       this.device.commands.splice(commandIndex, 1);
+    }
+  }
+
+  navigateToPreview() {
+    this.router.navigate(['/monitoring/preview'], {
+      state: { selectedDevices: [this.device] },
+    });
+  }
+
+  navigateToMonitoring(): void {
+    if (this.device && this.device.monitoring) {
+      const monitoringCode = this.device.monitoring.monitoringCode;
+      this.router.navigate([`/monitoring/${monitoringCode}`]);
     }
   }
 }

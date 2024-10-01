@@ -142,9 +142,9 @@
       </ng-template>
 
       <ng-template pTemplate="body" let-device>
-        <tr>
+        <tr [ngClass]="{'disabled-row': !device.canEdit}">
           <td>
-            <p-tableCheckbox [value]="device"></p-tableCheckbox>
+            <p-tableCheckbox [value]="device" [disabled]="!device.canEdit"></p-tableCheckbox>
           </td>
           <td>{{ device.deviceCode }}</td>
           <td>
@@ -160,6 +160,7 @@
           <td>{{ device.createdAt | date : "short" }}</td>
         </tr>
       </ng-template>
+      
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="8">No devices found.</td>

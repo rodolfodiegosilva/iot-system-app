@@ -1,4 +1,3 @@
-/* Container principal para o dispositivo */
 .device-container {
   margin: 5px 5px;
   padding: 5px 5px;
@@ -8,29 +7,52 @@
   background-color: #f4f6f9;
 }
 
-/* Estrutura das seções lado a lado: Edit Device e Owners */
+
+.command-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.command-block {
+  flex: 1;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.command-block h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.command-block p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+
 .row-container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  /* Ensures proper behavior for smaller screens */
   flex-wrap: wrap;
 }
 
-/* Largura da seção de Edição de Dispositivo (60%) */
-.edit-info {
-  flex: 0 0 60%;
-  /* Adjust padding for smaller devices */
-  padding: 10px;
-}
-
-/* Largura da seção de Informação de Donos (40%) */
 .owner-info {
   flex: 0 0 40%;
   padding: 10px;
 }
 
-/* Alinhamento das seções no modo de edição e visualização */
 .top-row {
   display: flex;
   justify-content: space-between;
@@ -53,7 +75,6 @@
   color: #333;
 }
 
-/* Seções de informações e donos */
 .device-section,
 .owner-info {
   flex: 1;
@@ -78,7 +99,6 @@
   color: #777;
 }
 
-/* Estilo para o formulário de edição */
 .device-section .p-grid {
   grid-template-columns: 1fr;
   gap: 15px;
@@ -114,14 +134,12 @@
   height: 80px;
 }
 
-/* Grid para exibir usuários adicionados */
 .related-users-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-/* Estilo para links */
 .p-col-12 a {
   word-break: break-all;
   display: inline-block;
@@ -136,20 +154,14 @@
   text-decoration: underline;
 }
 
-/* Mensagem de erro */
 .error {
   color: red;
   font-weight: bold;
   text-align: center;
   margin-top: 10px;
+  font-size: 12px;
 }
 
-.custom-multiSelect {
-  width: 100%; /* Adjust to 100% width for better responsiveness */
-  display: inline-block;
-}
-
-/* Button responsiveness */
 .edition-form-actions {
   display: flex;
   justify-content: flex-end;
@@ -168,107 +180,13 @@
   opacity: 0.9;
 }
 
-/* Responsive Styles for different screen sizes */
-@media (max-width: 1200px) {
-  .row-container {
-    gap: 15px;
-  }
-
-  .edit-info {
-    flex: 0 0 65%;
-  }
-
-  .owner-info {
-    flex: 0 0 35%;
-  }
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 992px) {
-  .row-container {
-    flex-direction: column;
-  }
-
-  .edit-info,
-  .owner-info {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
-  .edition-form-actions {
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .btn-save,
-  .btn-cancel {
-    flex: 1;
-    max-width: 180px;
-  }
-}
-
-@media (max-width: 768px) {
-  .device-container {
-    padding: 0px;
-  }
-
-  .device-section,
-  .owner-info {
-    padding: 10px;
-  }
-
-  .section-title {
-    font-size: 20px;
-    margin-top: 10px;
-  }
-
-  .command-block h3 {
-    font-size: 16px;
-  }
-
-  .related-users-grid {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .user-box {
-    padding: 5px;
-    min-width: 80px;
-    max-width: 50%;
-    margin-bottom: 2px;
-  }
-  .assigned-owners {
-    font-size: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .top-row {
-    display: flex;
-    flex-direction: column;
-  }
-  .section-title {
-    font-size: 18px;
-  }
-  .top-row p-card {
-    padding: 0%;
-  }
-  .command-block h3 {
-    font-size: 16px;
-  }
-
-  .edition-form-actions {
-    gap: 10px;
-  }
-}
-
-/* User Box Responsiveness */
 .user-box {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px;
   min-width: 180px;
-  max-width: 100%; /* Make sure it does not overflow */
+  max-width: 100%;
   border: 2px solid #ccc;
   border-radius: 10px;
   background-color: #f0f8ff;
@@ -300,6 +218,7 @@
 .remove-user-btn:hover {
   background-color: #ff7875;
 }
+
 .user-select {
   width: 95%;
   padding: 10px;
@@ -324,23 +243,22 @@
   justify-content: space-evenly;
 }
 
-
 .command-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Dividindo a seção em duas colunas */
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin-bottom: 20px;
 }
 
 .parameter-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Exibe 2 parâmetros por linha */
+  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
   margin-bottom: 20px;
 }
 
 .parameter-item {
-  position: relative; /* Para posicionar o botão "X" */
+  position: relative;
   padding: 10px;
   background-color: #f9f9f9;
   border: 1px dashed #ddd;
@@ -378,15 +296,6 @@
 .btn-remove-command {
   background-color: #ff4d4f;
 }
-
-.error {
-  color: red;
-  font-size: 12px;
-}
-
-
-
-
 
 .custom-select-container {
   width: 100%;
@@ -455,3 +364,194 @@
   border-radius: 50%;
 }
 
+.monitoring-section {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centraliza o conteúdo */
+}
+
+.inline-monitoring {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.inline-monitoring span {
+  font-size: 13px;
+  white-space: nowrap;
+  padding: 2px 5px;
+}
+
+.monitoring-details p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.no-monitoring {
+  text-align: center;
+  margin-top: 20px;
+  background-color: #fff3cd;
+  padding: 15px;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+}
+
+.create-monitoring-btn {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-monitoring-btn:hover {
+  background-color: #218838;
+}
+
+.btn-view-monitoring {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.btn-view-monitoring:hover {
+  background-color: #0056b3;
+}
+.status-on {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-off {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .row-container {
+    gap: 15px;
+  }
+
+  .edit-info {
+    flex: 0 0 65%;
+  }
+
+  .owner-info {
+    flex: 0 0 35%;
+  }
+}
+
+@media (max-width: 992px) {
+  .row-container {
+    flex-direction: column;
+  }
+
+  .edit-info,
+  .owner-info {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .edition-form-actions {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    flex: 1;
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .monitoring-section {
+    margin-top: 20px;
+    padding: 15px;
+  }
+
+  .monitoring-details p {
+    font-size: 14px;
+  }
+
+  .device-container {
+    padding: 0px;
+  }
+
+  .device-section,
+  .owner-info {
+    padding: 10px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
+  .command-block h3 {
+    font-size: 16px;
+  }
+
+  .related-users-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .user-box {
+    padding: 5px;
+    min-width: 80px;
+    max-width: 50%;
+    margin-bottom: 2px;
+  }
+
+  .assigned-owners {
+    font-size: 15px;
+  }
+
+  .inline-monitoring {
+    flex-direction: column;
+  }
+  .command-details-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .top-row p-card {
+    padding: 0%;
+  }
+
+  .command-block h3 {
+    font-size: 16px;
+  }
+
+  .edition-form-actions {
+    gap: 10px;
+  }
+  .create-monitoring-btn {
+    font-size: 15px;
+  }
+}

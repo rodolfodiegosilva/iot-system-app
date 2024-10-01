@@ -7,6 +7,7 @@ import {
 } from '../models/paginated-data.model';
 import { Device, DeviceRequest } from '../models/device.model';
 import { environment } from '../../environments/environment';
+import { Monitoring } from '../models/monitoring.model';
 
 @Injectable({
   providedIn: 'root',
@@ -100,4 +101,9 @@ export class DeviceService {
   updateDevice(deviceCode: string, device: DeviceRequest): Observable<Device> {
     return this.http.put<Device>(`${this.baseUrl}/${deviceCode}`, device);
   }
+
+  getMonitoringByDeviceCode(deviceCode: string): Observable<Monitoring> {
+    return this.http.get<Monitoring>(`${this.baseUrl}/${deviceCode}/monitoring`);
+  }
+  
 }

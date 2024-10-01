@@ -7,7 +7,7 @@ export interface Monitoring {
   monitoringCode: string;
   user: User;
   device: Device;
-  status: string;
+  monitoringStatus: string;
   createdAt: string;
   updatedAt: string;
 }

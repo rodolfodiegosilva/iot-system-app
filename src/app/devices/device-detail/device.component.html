@@ -4,7 +4,7 @@
   <div class="device-container">
     <div class="top-row">
       <button
-      *ngIf="canEdit && !editMode"
+        *ngIf="canEdit && !editMode"
         pButton
         label="Edit Device"
         icon="pi pi-pencil"
@@ -353,30 +353,79 @@
               *ngFor="let command of device.commands"
               [header]="command.operation"
             >
-              <div class="command-details-container">
-                <div class="command-block">
-                  <h3>Description</h3>
-                  <p><strong>Operation:</strong> {{ command.operation }}</p>
-                  <p><strong>Description:</strong> {{ command.description }}</p>
-                  <p><strong>Result:</strong> {{ command.result }}</p>
-                  <p><strong>Format:</strong> {{ command.format }}</p>
-                </div>
-                <div class="command-block">
-                  <h3 class="assigned-owners">Command Details</h3>
-                  <p><strong>Command:</strong> {{ command.command.command }}</p>
-                  <div *ngFor="let parameter of command.command.parameters">
-                    <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
-                    <p>
-                      <strong>Parameter Description:</strong>
-                      {{ parameter.description }}
-                    </p>
-                  </div>
+            <div class="command-details-container">
+              <div class="command-block">
+                <h3>Description</h3>
+                <p><strong>Operation:</strong> {{ command.operation }}</p>
+                <p><strong>Description:</strong> {{ command.description }}</p>
+                <p><strong>Result:</strong> {{ command.result }}</p>
+                <p><strong>Format:</strong> {{ command.format }}</p>
+              </div>
+              
+              <div class="command-block">
+                <h3>Command Details</h3>
+                <p><strong>Command:</strong> {{ command.command.command }}</p>
+                <div *ngFor="let parameter of command.command.parameters">
+                  <p><strong>Parameter Name:</strong> {{ parameter.name }}</p>
+                  <p><strong>Parameter Description:</strong> {{ parameter.description }}</p>
                 </div>
               </div>
+            </div>
+            
             </p-accordionTab>
           </p-accordion>
         </p-panel>
       </div>
+
+      <!-- Monitoring Information Section -->
+      <div
+        class="monitoring-section"
+        *ngIf="device.monitoring; else noMonitoring"
+      >
+        <h2 class="section-title">Monitoring Information</h2>
+        <div class="monitoring-details inline-monitoring">
+          <span
+            ><strong>Monitoring Code:</strong>
+            {{ device.monitoring.monitoringCode }}</span
+          >
+          <span
+            [ngClass]="{
+              'status-on': device.monitoring.monitoringStatus === 'ON',
+              'status-off': device.monitoring.monitoringStatus === 'OFF'
+            }"
+            ><strong style="color: black !important;">Status:</strong>
+            {{ device.monitoring.monitoringStatus }}</span
+          >
+          <span><strong>User:</strong> {{ device.monitoring.user.name }}</span>
+          <span
+            ><strong>Created At:</strong>
+            {{ device.monitoring.createdAt | date : "short" }}</span
+          >
+          <span
+            ><strong>Updated At:</strong>
+            {{ device.monitoring.updatedAt | date : "short" }}</span
+          >
+        </div>
+        <!-- Botão para redirecionar para a página de monitoramento -->
+        <button
+          pButton
+          label="View Monitoring"
+          class="btn-view-monitoring"
+          (click)="navigateToMonitoring()"
+        ></button>
+      </div>
+
+      <ng-template #noMonitoring>
+        <div class="no-monitoring">
+          <p>No Monitoring information available for this device.</p>
+          <button
+            pButton
+            label="Create Monitoring for this device"
+            (click)="navigateToPreview()"
+            class="create-monitoring-btn"
+          ></button>
+        </div>
+      </ng-template>
     </ng-template>
   </div>
 </div>
@@ -384,5 +433,3 @@
 <ng-template #noDevice>
   <div class="error">{{ errorMessage }}</div>
 </ng-template>
-
-<app-device-monitoring *ngIf="device" [device]="device"></app-device-monitoring>
