@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import {
-  DevicePaginatedData,
-  PaginatedData,
-} from '../models/paginated-data.model';
-import { Device, DeviceRequest } from '../models/device.model';
+import { Device, DevicePaginatedData, DeviceRequest } from '../models/device.model';
 import { environment } from '../../environments/environment';
-import { Monitoring } from '../models/monitoring.model';
+import { Monitoring, MonitoringPaginatedData } from '../models/monitoring.model';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +48,7 @@ export class DeviceService {
     sortBy: string,
     sortDir: string,
     filters?: any
-  ): Observable<PaginatedData> {
+  ): Observable<MonitoringPaginatedData> {
     let queryParams = `?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
     if (filters) {
@@ -63,7 +59,7 @@ export class DeviceService {
       });
     }
 
-    return this.http.get<PaginatedData>(
+    return this.http.get<MonitoringPaginatedData>(
       `${this.baseUrl}/${deviceCode}/monitorings${queryParams}`
     );
   }
@@ -105,5 +101,10 @@ export class DeviceService {
   getMonitoringByDeviceCode(deviceCode: string): Observable<Monitoring> {
     return this.http.get<Monitoring>(`${this.baseUrl}/${deviceCode}/monitoring`);
   }
+  
+  deleteDevice(deviceCode: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${deviceCode}`);
+  }
+  
   
 }

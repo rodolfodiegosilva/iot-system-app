@@ -9,12 +9,9 @@ import {
 import { DeviceService } from '../../services/device-service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Device, DeviceRequest } from '../../models/device.model';
-import { DeviceStatus } from '../../models/device-status.enum';
+import { Device, DeviceRequest, DeviceStatus } from '../../models/device.model';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { CommandDescription } from '../../models/command-description.model';
-import { Command } from '../../models/command.model';
-import { Parameter } from '../../models/parameter.model';
+import { CommandDescription, Parameter } from '../../models/command-description.model';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { SimpleUser } from '../../models/user.model';

@@ -555,3 +555,71 @@
     font-size: 15px;
   }
 }
+
+.delete-button {
+  background-color: #ff4d4f;
+  color: white;
+}
+.delete-modal-content {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.device-details p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.device-details strong {
+  font-weight: bold;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.p-button-danger {
+  background-color: #ff4d4f;
+  border: none;
+}
+
+.p-button-danger:hover {
+  background-color: #ff7875;
+}
+
+.p-button-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.p-button-secondary:hover {
+  background-color: #868e96;
+}
+
+.status-on {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-off {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+::ng-deep .ui-dialog {
+  width: 500px;
+  border-radius: 10px;
+}
+
+::ng-deep .ui-dialog-titlebar {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+::ng-deep .ui-dialog-content {
+  padding: 20px;
+}

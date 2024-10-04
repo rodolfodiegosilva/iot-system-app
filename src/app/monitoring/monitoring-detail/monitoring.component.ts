@@ -5,13 +5,23 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from '../../services/auth.service';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { Monitoring } from '../../models/monitoring.model';
 
 @Component({
   selector: 'app-monitoring',
   templateUrl: './monitoring.component.html',
   styleUrls: ['./monitoring.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, BreadcrumbModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BreadcrumbModule,
+    DialogModule,
+    ButtonModule,
+  ],
 })
 export class MonitoringComponent implements OnInit, OnChanges {
   monitoring: any;
@@ -20,16 +30,27 @@ export class MonitoringComponent implements OnInit, OnChanges {
   commandStates: { [key: string]: boolean } = {};
   commandResponse: { [key: string]: string | null } = {};
   filteredCommands: any[] = [];
+  loggedUser: any;
+
+  displayEditModal: boolean = false;
+  displayDeleteModal: boolean = false;
+  editMonitoringData: any = {
+    monitoringStatus: '',
+    deviceCode: '',
+    description: '',
+  };
 
   constructor(
     private route: ActivatedRoute,
     private monitoringService: MonitoringService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.breadcrumbItems = [];
   }
 
   ngOnInit(): void {
+    this.fetchLoggedUser();
     this.loadMonitoringData();
   }
 
@@ -39,11 +60,22 @@ export class MonitoringComponent implements OnInit, OnChanges {
     }
   }
 
+  fetchLoggedUser(): void {
+    this.authService.fetchUserData().subscribe({
+      next: (data: any) => {
+        this.loggedUser = data;
+      },
+      error: () => {
+        this.errorMessage = 'User not found';
+      },
+    });
+  }
+
   loadMonitoringData(): void {
     const monitoringCode = this.route.snapshot.paramMap.get('monitoringCode');
     if (monitoringCode) {
       this.monitoringService.getMonitoringByCode(monitoringCode).subscribe({
-        next: (data: any) => {
+        next: (data: Monitoring) => {
           this.monitoring = data;
           this.errorMessage = undefined;
           this.setBreadcrumbItems();
@@ -114,6 +146,62 @@ export class MonitoringComponent implements OnInit, OnChanges {
         console.error('Error sending command:', error);
         this.commandStates[commandKey] = false;
         this.commandResponse[commandKey] = 'Error sending command';
+      },
+    });
+  }
+
+  canEditOrDelete(): boolean {
+    return (
+      this.loggedUser &&
+      (this.loggedUser.id === this.monitoring?.createdBy?.id ||
+        this.loggedUser.role === 'ADMIN')
+    );
+  }
+
+  openEditModal(): void {
+    this.editMonitoringData = {
+      monitoringStatus: this.monitoring.monitoringStatus,
+      deviceCode: this.monitoring.device.deviceCode,
+      description: this.monitoring.description,
+    };
+    this.displayEditModal = true;
+  }
+
+  cancelEdit(): void {
+    this.displayEditModal = false;
+  }
+
+  saveEdit(): void {
+    const monitoringCode = this.monitoring.monitoringCode;
+    this.monitoringService
+      .updateMonitoring(monitoringCode, this.editMonitoringData)
+      .subscribe({
+        next: () => {
+          this.displayEditModal = false;
+          this.loadMonitoringData();
+        },
+        error: (error) => {
+          this.errorMessage = 'Error updating monitoring';
+        },
+      });
+  }
+
+  openDeleteModal(): void {
+    this.displayDeleteModal = true;
+  }
+
+  cancelDelete(): void {
+    this.displayDeleteModal = false;
+  }
+
+  confirmDeleteMonitoring(): void {
+    const monitoringCode = this.monitoring.monitoringCode;
+    this.monitoringService.deleteMonitoring(monitoringCode).subscribe({
+      next: () => {
+        this.router.navigate(['/monitorings']);
+      },
+      error: (error) => {
+        this.errorMessage = 'Error deleting monitoring';
       },
     });
   }

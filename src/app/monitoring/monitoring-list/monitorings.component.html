@@ -19,7 +19,7 @@
       [globalFilterFields]="[
         'monitoringCode',
         'monitoringStatus',
-        'userName',
+        'createdBy.name',
         'deviceName',
         'createdAt',
         'updatedAt'
@@ -36,8 +36,8 @@
           <th pSortableColumn="monitoringStatus">
             Monitoring Status <p-sortIcon field="monitoringStatus"></p-sortIcon>
           </th>
-          <th pSortableColumn="userName">
-            User <p-sortIcon field="userName"></p-sortIcon>
+          <th pSortableColumn="createdBy.name">
+            User <p-sortIcon field="createdBy.name"></p-sortIcon>
           </th>
           <th pSortableColumn="deviceName">
             Device Name <p-sortIcon field="deviceName"></p-sortIcon>
@@ -90,7 +90,7 @@
           <th>
             <p-columnFilter
               type="text"
-              field="userName"
+              field="createdBy.name"
               placeholder="Search by User"
               ariaLabel="Filter User"
               (input)="onFilter($event, 'userName')"
@@ -135,7 +135,7 @@
               [severity]="getSeverity(monitoring.monitoringStatus)"
             ></p-tag>
           </td>
-          <td>{{ monitoring.user.name }}</td>
+          <td>{{ monitoring.createdBy.name }}</td>
           <td>{{ monitoring.device.deviceName }}</td>
           <td>{{ monitoring.createdAt | date: 'short' }}</td>
           <td>{{ monitoring.updatedAt | date: 'short' }}</td>

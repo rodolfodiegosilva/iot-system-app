@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { Table, TableModule } from 'primeng/table';
+import {  TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,9 +9,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Monitoring } from '../../models/monitoring.model';
+import { Monitoring, MonitoringPaginatedData } from '../../models/monitoring.model';
 import { MonitoringService } from '../../services/monitoring.service';
-import { PaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -76,7 +75,7 @@ export class MonitoringsComponent implements OnInit, OnDestroy {
 
     this.monitoringService
       .getMonitoringData(page, size, sortBy, sortDir, this.filters)
-      .subscribe((data: PaginatedData) => {
+      .subscribe((data: MonitoringPaginatedData) => {
         this.monitorings = data.content;
         this.totalRecords = data.totalElements;
         this.loading = false;

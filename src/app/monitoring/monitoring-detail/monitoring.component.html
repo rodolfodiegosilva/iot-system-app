@@ -2,7 +2,6 @@
 
 <div *ngIf="monitoring" class="monitoring-container">
   <div class="header-section">
-    <!-- Informações de monitoramento, usuário e dispositivo -->
     <div class="monitoring-section">
       <h2>Monitoring Information</h2>
       <p><strong>Code:</strong> {{ monitoring.monitoringCode }}</p>
@@ -26,10 +25,10 @@
     </div>
     <div class="monitoring-section">
       <h2>User Information</h2>
-      <p><strong>Name:</strong> {{ monitoring.user.name }}</p>
-      <p><strong>Email:</strong> {{ monitoring.user.email }}</p>
-      <p><strong>Username:</strong> {{ monitoring.user.username }}</p>
-      <p><strong>Role:</strong> {{ monitoring.user.role }}</p>
+      <p><strong>Name:</strong> {{ monitoring.createdBy.name }}</p>
+      <p><strong>Email:</strong> {{ monitoring.createdBy.email }}</p>
+      <p><strong>Username:</strong> {{ monitoring.createdBy.username }}</p>
+      <p><strong>Role:</strong> {{ monitoring.createdBy.role }}</p>
     </div>
     <div class="monitoring-section">
       <h2>Device Information</h2>
@@ -114,3 +113,134 @@
 <div *ngIf="errorMessage" class="error">
   <p>{{ errorMessage }}</p>
 </div>
+
+<div class="action-buttons" *ngIf="canEditOrDelete()">
+  <button
+    (click)="openEditModal()"
+    pButton
+    label="Edit"
+    icon="pi pi-pencil"
+    class="edit-button"
+  >
+    <i style="margin-right: 5px" class="fas fa-edit"></i>
+  </button>
+  <button
+    pButton
+    label="Delete"
+    icon="pi pi-trash"
+    class="delete-button"
+    style="margin-left: 10px; background-color: red"
+    (click)="openDeleteModal()"
+  >
+    <i style="margin-right: 5px" class="fas fa-trash-alt"></i>
+  </button>
+</div>
+
+<p-dialog
+  [(visible)]="displayDeleteModal"
+  modal="true"
+  header="Confirm Deletion"
+  [closable]="false"
+  class="custom-modal"
+>
+  <div class="delete-modal-content">
+    <p>
+      Are you sure you want to delete the monitoring
+      <strong>{{ monitoring?.monitoringCode }}</strong
+      >?
+    </p>
+    <div class="monitoring-details">
+      <p><strong>Code:</strong> {{ monitoring?.monitoringCode }}</p>
+      <p><strong>Description:</strong> {{ monitoring?.description }}</p>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="modal-buttons">
+      <button
+        pButton
+        type="button"
+        label="Yes"
+        icon="pi pi-check"
+        class="p-button-danger"
+        (click)="confirmDeleteMonitoring()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="No"
+        icon="pi pi-times"
+        class="p-button-secondary"
+        (click)="cancelDelete()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="displayEditModal"
+  modal="true"
+  header="Edit Monitoring"
+  [closable]="false"
+  class="custom-modal"
+  [style]="{ width: '30%' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+  <div class="edit-modal-content">
+    <form #editForm="ngForm">
+      <div class="form-group">
+        <label for="monitoringStatus">Monitoring Status:</label>
+        <select
+          class="p-dialog-content-select"
+          [(ngModel)]="editMonitoringData.monitoringStatus"
+          name="monitoringStatus"
+          required
+        >
+          <option value="ON">ON</option>
+          <option value="OFF">OFF</option>          
+          <option value="STANDBY">STANDBY</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="deviceCode">Device Code:</label>
+        <input
+          class="p-dialog-content-input"
+          type="text"
+          [(ngModel)]="editMonitoringData.deviceCode"
+          name="deviceCode"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea
+          class="p-dialog-content-textarea"
+          [(ngModel)]="editMonitoringData.description"
+          name="description"
+          required
+        ></textarea>
+      </div>
+    </form>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-success"
+      [disabled]="!editForm.valid"
+      (click)="saveEdit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="cancelEdit()"
+    ></button>
+  </ng-template>
+</p-dialog>

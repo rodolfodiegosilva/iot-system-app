@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PaginatedData } from '../models/paginated-data.model';
-import { MonitoringRequest } from '../models/monitoring-request';
 import { environment } from '../../environments/environment';
+import { MonitoringPaginatedData, MonitoringRequest } from '../models/monitoring.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +18,7 @@ export class MonitoringService {
     sortBy: string,
     sortDir: string,
     filters?: any
-  ): Observable<PaginatedData> {
+  ): Observable<MonitoringPaginatedData> {
     let queryParams = `/pageable?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`;
 
     if (filters) {
@@ -30,7 +29,7 @@ export class MonitoringService {
       });
     }
 
-    return this.http.get<PaginatedData>(`${this.baseUrl}${queryParams}`);
+    return this.http.get<MonitoringPaginatedData>(`${this.baseUrl}${queryParams}`);
   }
 
   getMonitoringByCode(monitoringCode: string): Observable<any> {
@@ -46,4 +45,12 @@ export class MonitoringService {
     
     return this.http.post<any>(`${deviceUrl}`, command);
   }
+  updateMonitoring(monitoringCode: string, updateData: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${monitoringCode}`, updateData);
+  }
+  deleteMonitoring(monitoringCode: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${monitoringCode}`);
+  }
+  
+  
 }
