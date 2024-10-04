@@ -20,14 +20,20 @@ import { DeviceMonitoringComponent } from '../device-monitoring/device-monitorin
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SimpleUser } from '../../models/user.model';
 import { UserService } from '../../services/user-service';
-import { Parameter } from '../../models/parameter.model';
-import { CommandDescription } from '../../models/command-description.model';
+import {
+  CommandDescription,
+  Parameter,
+} from '../../models/command-description.model';
 import { AuthService } from '../../services/auth.service';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
   styleUrls: ['./device.component.css'],
+  providers: [ConfirmationService, MessageService],
   standalone: true,
   imports: [
     CommonModule,
@@ -41,6 +47,7 @@ import { AuthService } from '../../services/auth.service';
     ReactiveFormsModule,
     DeviceMonitoringComponent,
     MultiSelectModule,
+    DialogModule,
   ],
 })
 export class DeviceComponent implements OnInit {
@@ -56,6 +63,7 @@ export class DeviceComponent implements OnInit {
   dropdownOpen = false;
   loggedUser: any;
   canEdit: any;
+  displayDeleteModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -63,7 +71,8 @@ export class DeviceComponent implements OnInit {
     private route: ActivatedRoute,
     private deviceService: DeviceService,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {
     this.deviceForm = this.fb.group({
       deviceName: ['', Validators.required],
@@ -295,5 +304,34 @@ export class DeviceComponent implements OnInit {
       const monitoringCode = this.device.monitoring.monitoringCode;
       this.router.navigate([`/monitoring/${monitoringCode}`]);
     }
+  }
+
+  openDeleteModal() {
+    this.displayDeleteModal = true;
+  }
+
+  confirmDeleteDevice() {
+    this.deviceService.deleteDevice(this.device?.deviceCode || '').subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Device Deleted',
+          detail: 'The device has been successfully deleted',
+        });
+        this.router.navigate(['/devices']);
+      },
+      error: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Deletion Failed',
+          detail: 'Failed to delete the device',
+        });
+      },
+    });
+    this.displayDeleteModal = false;
+  }
+
+  cancelDelete() {
+    this.displayDeleteModal = false;
   }
 }

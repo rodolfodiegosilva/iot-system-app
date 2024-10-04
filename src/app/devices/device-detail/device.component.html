@@ -11,6 +11,16 @@
         class="edit-button"
         (click)="toggleEditMode()"
       ></button>
+    
+      <button
+        *ngIf="canEdit && !editMode"
+        pButton
+        label="Delete Device"
+        icon="pi pi-trash"
+        class="delete-button"
+        style="margin-left: 10px;"
+        (click)="openDeleteModal()"
+      ></button>
     </div>
 
     <div *ngIf="editMode; else viewMode" class="device-container">
@@ -396,7 +406,7 @@
             ><strong style="color: black !important;">Status:</strong>
             {{ device.monitoring.monitoringStatus }}</span
           >
-          <span><strong>User:</strong> {{ device.monitoring.user.name }}</span>
+          <span><strong>User:</strong> {{ device.monitoring.createdBy.name }}</span>
           <span
             ><strong>Created At:</strong>
             {{ device.monitoring.createdAt | date : "short" }}</span
@@ -433,3 +443,24 @@
 <ng-template #noDevice>
   <div class="error">{{ errorMessage }}</div>
 </ng-template>
+
+<p-dialog [(visible)]="displayDeleteModal" modal="true" header="Confirm Deletion" [closable]="false">
+  <div class="delete-modal-content">
+    <p>Are you sure you want to delete the device <strong>{{ device?.deviceName }}</strong>?</p>
+
+    <div class="device-details">
+      <p><strong>Device Code:</strong> {{ device?.deviceCode }}</p>
+      <p><strong>Description:</strong> {{ device?.description }}</p>
+      <p><strong>Status:</strong> <span [ngClass]="device?.deviceStatus === 'ON' ? 'status-on' : 'status-off'">{{ device?.deviceStatus }}</span></p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="modal-buttons">
+      <button pButton type="button" label="Yes" icon="pi pi-check" class="p-button-danger" (click)="confirmDeleteDevice()"></button>
+      <button pButton type="button" label="No" icon="pi pi-times" class="p-button-secondary" (click)="cancelDelete()"></button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+

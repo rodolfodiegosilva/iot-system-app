@@ -1,8 +1,7 @@
-// src/app/models/device.model.ts
 import { CommandDescription } from './command-description.model';
-import { DeviceStatus } from './device-status.enum';
 import { Monitoring } from './monitoring.model';
 import { User } from './user.model';
+
 export interface Device {
   id: number;
   deviceCode: string;
@@ -31,4 +30,19 @@ export interface DeviceRequest {
   deviceStatus: DeviceStatus;
   usernames: string[];
   commands: CommandDescription[];
+}
+
+export enum DeviceStatus {
+  ON = 'ON',
+  OFF = 'OFF',
+  STANDBY = 'STANDBY',
+}
+
+export interface DevicePaginatedData {
+  content: Device[];
+  pageNo: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
 }

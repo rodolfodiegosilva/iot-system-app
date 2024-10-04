@@ -9,9 +9,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Monitoring } from '../../models/monitoring.model';
+import { Monitoring, MonitoringPaginatedData } from '../../models/monitoring.model';
 import { DeviceService } from '../../services/device-service';
-import { PaginatedData } from '../../models/paginated-data.model';
 import { Router } from '@angular/router';
 import { Device } from '../../models/device.model';
 
@@ -76,7 +75,7 @@ export class DeviceMonitoringComponent implements OnInit, OnDestroy {
 
     this.deviceService
       .getMonitorings(this.device.deviceCode, page, size, sortBy, sortDir, this.filters)
-      .subscribe((data: PaginatedData) => {
+      .subscribe((data: MonitoringPaginatedData) => {
         this.monitorings = data.content;
         this.totalRecords = data.totalElements;
         this.loading = false;

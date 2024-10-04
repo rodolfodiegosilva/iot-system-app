@@ -6,8 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
-import { MonitoringRequest } from '../../models/monitoring-request';
-import { MonitoringStatus } from '../../models/monitoring-status.enum';
+import { MonitoringRequest, MonitoringStatus } from '../../models/monitoring.model';
 
 interface MonitoringRequestExtended extends MonitoringRequest {
   invalidDescription?: boolean;
