@@ -8,6 +8,8 @@
 
 # Node
 /node_modules
+/cypress/screenshots
+/cypress/reports
 npm-debug.log
 yarn-error.log
 
